@@ -19,81 +19,109 @@ import {
 import { INITIAL_CUSTOMERS } from "@/lib/data-service";
 import { QRCodeSVG } from "qrcode.react";
 
-// Card catalog for Gallery Showcase
+// Card catalog for Gallery Showcase with real card images and targeted SEO
 const NFC_CARDS_CATALOG = [
   {
-    id: "matte-black-metal",
-    name: "Matte Black Stealth Metal",
-    badge: "Most Popular",
-    material: "Aerospace Stainless Steel",
-    finish: "Matte Black with Precision Laser Engraving",
-    chip: "NXP NTAG216 (888 Bytes)",
-    durability: "Waterproof, Scratch-Resistant, 100k+ Taps",
-    accentColor: "from-slate-900 via-neutral-900 to-zinc-950",
-    borderColor: "border-slate-700",
-    tagColor: "bg-slate-800 text-slate-200 border-slate-700",
-    description: "Ultra-premium matte black metal card with a solid weighty feel and laser-etched branding.",
+    id: "doctor-clinic-review",
+    name: "Doctor & Medical Clinic Google Review NFC Card",
+    image: "/cards/card-1.jpg",
+    badge: "Medical & Clinics",
+    category: "Healthcare & Wellness",
+    material: "Medical-Grade Acrylic & Hard PVC",
+    finish: "Anti-Glare Healthcare Print with Stethoscope Artwork",
+    chip: "NXP High-Speed Contactless Sensor",
+    durability: "100% Waterproof, Sanitizer-Safe, 100k+ Taps",
+    tagColor: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+    seoKeywords: "Doctor NFC Card, Dental Clinic Review Standee, Medical Clinic Google Review, Healthcare Tap Card",
+    idealFor: "Doctors, Dentists, Hospitals, Diagnostic Labs & Physiotherapy Clinics",
+    description:
+      "Crafted specifically for healthcare practitioners. Place it on the clinic reception or consultation desk so satisfied patients can tap and post 5-star Google Reviews in 2 seconds.",
   },
   {
-    id: "luxury-gold-metal",
-    name: "24K Luxury Gold Metal",
-    badge: "VIP Edition",
-    material: "Mirror-Polished Brass Alloy",
-    finish: "24K Gold Mirror Finish & Deep Engraving",
-    chip: "NXP NTAG216 High-Power Antenna",
-    durability: "Heavyweight 22g Solid Metal, Lifetime NFC",
-    accentColor: "from-amber-950 via-yellow-950 to-amber-900",
-    borderColor: "border-amber-500/40",
-    tagColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
-    description: "Executive-grade 24K mirror gold card designed for high-profile founders, executives, and luxury brands.",
-  },
-  {
-    id: "bamboo-wood",
-    name: "Eco-Friendly Bamboo Wood",
-    badge: "100% Sustainable",
-    material: "Real Natural Bamboo Wood",
-    finish: "Organic Grain with Fine Laser Etching",
-    chip: "Embedded Contactless Smart NFC",
-    durability: "Lightweight, Organic, Eco-Friendly",
-    accentColor: "from-amber-950/80 via-stone-900 to-neutral-950",
-    borderColor: "border-amber-800/40",
-    tagColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-    description: "Sustainable natural bamboo wood card with unique organic wood grain texture on every piece.",
-  },
-  {
-    id: "frosted-acrylic",
-    name: "Frosted Minimalist Acrylic",
-    badge: "Modern Aesthetic",
-    material: "Translucent Frosted Acrylic PVC",
-    finish: "Soft Matte Frosted with Spot UV QR",
-    chip: "Ultra-Thin High-Speed NFC Core",
-    durability: "100% Waterproof, Flexible & Durable",
-    accentColor: "from-indigo-950/60 via-slate-900 to-blue-950/60",
-    borderColor: "border-indigo-500/30",
-    tagColor: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
-    description: "Futuristic translucent frosted finish with smooth matte texture and vibrant QR print.",
-  },
-  {
-    id: "custom-branded",
-    name: "Custom Full-Color Branded",
-    badge: "Custom Artwork",
+    id: "google-5star-review",
+    name: "Google 5-Star Business Review Tap & Scan NFC Card",
+    image: "/cards/card-2.jpg",
+    badge: "Best Seller #1",
+    category: "Retail & Local Business",
     material: "Reinforced Composite Polymer",
-    finish: "Full Bleed CMYK + Holographic Foil",
-    chip: "Multi-Protocol Smart NFC Sensor",
-    durability: "Waterproof, Fade-Resistant, Heavy Gauge",
-    accentColor: "from-purple-950/60 via-slate-900 to-indigo-950/60",
-    borderColor: "border-purple-500/30",
-    tagColor: "bg-purple-500/20 text-purple-300 border-purple-500/30",
-    description: "Tailor-made with your exact company logo, custom branding colors, and optional holographic foil.",
+    finish: "Official Google Rating Visuals + High-Contrast Dynamic QR",
+    chip: "NXP NTAG216 High-Power Antenna",
+    durability: "Scratch-Resistant, Fade-Proof, Lifetime Chip",
+    tagColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+    seoKeywords: "Google Review NFC Card, Tap to Review Card, Google 5 Star Standee, Business Rating Booster",
+    idealFor: "Retail Stores, Salons, Spas, Automobile Showrooms & Local Businesses",
+    description:
+      "Multiply your 5-star Google Reviews on autopilot. Customers simply tap their phone to launch your direct Google Maps review page with 5 stars pre-selected.",
+  },
+  {
+    id: "instagram-booster",
+    name: "Instagram Follower Growth & Social Booster NFC Card",
+    image: "/cards/card-3.jpg",
+    badge: "Creator & Influencer",
+    category: "Social Media & Creators",
+    material: "Hardened Ultra-Gloss Polymer",
+    finish: "Iconic Instagram Sunset Gradient with Sharp QR Backup",
+    chip: "Dual-Frequency Instant Tap NFC Core",
+    durability: "Waterproof, Anti-Fingerprint Coating",
+    tagColor: "bg-pink-500/20 text-pink-300 border-pink-500/30",
+    seoKeywords: "Instagram NFC Card, Instagram Follower Card, Social Media Growth NFC, Creator Smart Card",
+    idealFor: "Influencers, Fashion Boutiques, Photographers, Cafes & Beauty Salons",
+    description:
+      "Turn physical store visitors and event attendees into loyal Instagram followers. 1 tap opens your profile, reels, and digital link hub without manual searching.",
+  },
+  {
+    id: "facebook-community",
+    name: "Facebook Page & Social Community NFC Card",
+    image: "/cards/card-4.jpg",
+    badge: "Social & Community",
+    category: "Local Community & Brand",
+    material: "Durable Cobalt Matte PVC",
+    finish: "Signature Facebook Blue Theme with Direct Scan Code",
+    chip: "Embedded Smart NFC Micro-Transponder",
+    durability: "Weather-Resistant, Long-Life Antenna",
+    tagColor: "bg-blue-500/20 text-blue-300 border-blue-500/30",
+    seoKeywords: "Facebook NFC Card, Facebook Page Like Card, Business Facebook Connect Card, Smart Social Card",
+    idealFor: "Local Businesses, Community Clubs, Event Organizers & Real Estate Agencies",
+    description:
+      "Seamlessly connect walk-in customers to your official Facebook page, group, or review section with a single contactless tap.",
+  },
+  {
+    id: "restaurant-cafe-menu",
+    name: "Restaurant & Cafe Digital Menu NFC Card / Standee",
+    image: "/cards/card-5.jpg",
+    badge: "Hospitality Special",
+    category: "Food & Dining",
+    material: "Spill-Proof Heavy Acrylic PVC",
+    finish: "High-Resolution Culinary Theme with Contactless Menu QR",
+    chip: "High-Sensitivity Table-Top Contactless Sensor",
+    durability: "100% Water & Oil Spill-Proof, Heavy Table Duty",
+    tagColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+    seoKeywords: "Restaurant NFC Menu, Cafe Contactless Menu Card, Digital Food Menu QR, Table Standee NFC",
+    idealFor: "Restaurants, Cafes, Bars, Cloud Kitchens, Food Trucks & Hotels",
+    description:
+      "Delight diners with an instant contactless menu. Guests tap the table card to browse dishes, check daily specials, and pay bills via UPI without waiting for staff.",
+  },
+  {
+    id: "linkedin-corporate",
+    name: "LinkedIn Professional & Executive Networking Card",
+    image: "/cards/card-6.jpg",
+    badge: "Corporate & Executive",
+    category: "Executive & Sales",
+    material: "Matte Black Ingot & Carbon Polymer",
+    finish: "Laser Precision Typography & High-Definition QR",
+    chip: "High-Performance NTAG216 (888 Bytes)",
+    durability: "Military-Grade Scratch Resistance, 100k+ Reads",
+    tagColor: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
+    seoKeywords: "LinkedIn NFC Card, Smart Business Card, Digital vCard Networking, Executive NFC Profile",
+    idealFor: "Founders, CXOs, Sales Teams, Consultants & Keynote Speakers",
+    description:
+      "Make an unforgettable impression at business summits and client meetings. Instantly exchange your LinkedIn profile, save vCard directly into the client's phonebook, and close deals faster.",
   },
 ];
 
 export default function HomePage() {
-  const [activeDemoTab, setActiveDemoTab] = useState(0);
   const [selectedGalleryCard, setSelectedGalleryCard] = useState(0);
   const [activeNav, setActiveNav] = useState("features");
-
-  const activeCustomer = INITIAL_CUSTOMERS[activeDemoTab];
 
   // Direct WhatsApp Order Handler pointing to 6306840513
   const handleOrderWhatsApp = (cardName?: string) => {
@@ -219,7 +247,7 @@ export default function HomePage() {
                   className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-base shadow-xl shadow-emerald-600/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-5 h-5" />
-                  <span>Order on WhatsApp (6306840513)</span>
+                  <span>Order on WhatsApp</span>
                 </button>
 
                 <button
@@ -248,95 +276,58 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Interactive Preview */}
-            <div className="lg:col-span-5 flex flex-col items-center">
-              {/* Profile Selector Tabs */}
-              <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#131d33] border border-slate-800 mb-6 shadow-xl">
-                {INITIAL_CUSTOMERS.map((cust, idx) => (
-                  <button
-                    key={cust.username}
-                    onClick={() => setActiveDemoTab(idx)}
-                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                      activeDemoTab === idx
-                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
-                        : "text-slate-400 hover:text-slate-200"
-                    }`}
-                  >
-                    /{cust.username}
-                  </button>
-                ))}
-              </div>
+            {/* Right Card Showcase (Replaces customer details mockup with real card image mainpage.jpg) */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center">
+              <div className="relative w-full max-w-[480px] group">
+                {/* Ambient glow behind the hero card */}
+                <div className="absolute -inset-2 bg-gradient-to-r from-amber-500/20 via-indigo-600/30 to-purple-600/20 rounded-[32px] blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
 
-              {/* Smartphone Mockup */}
-              <div className="relative w-full max-w-[340px] rounded-[42px] p-3 bg-gradient-to-b from-slate-700 via-slate-900 to-slate-950 shadow-2xl border-4 border-slate-800">
-                {/* Phone Speaker & Camera Notch */}
-                <div className="w-28 h-4 bg-slate-950 rounded-full mx-auto mb-2 flex items-center justify-center">
-                  <div className="w-3 h-3 bg-slate-900 rounded-full border border-slate-800 mr-2" />
-                  <div className="w-12 h-1 bg-slate-800 rounded-full" />
-                </div>
-
-                {/* Inner Phone Screen */}
-                <div className="rounded-[32px] bg-[#0d1527] border border-slate-800/80 p-4 space-y-4 overflow-hidden relative">
-                  {/* Avatar & Info */}
-                  <div className="text-center space-y-2 pt-2">
-                    <div className="w-20 h-20 mx-auto rounded-full p-1 bg-gradient-to-tr from-indigo-500 to-pink-500">
-                      <div className="relative w-full h-full rounded-full overflow-hidden bg-slate-900">
-                        {activeCustomer.profileImage && (
-                          <Image
-                            src={activeCustomer.profileImage}
-                            alt={activeCustomer.name}
-                            fill
-                            sizes="80px"
-                            className="object-cover"
-                          />
-                        )}
-                      </div>
+                {/* Card Container */}
+                <div className="relative rounded-[28px] bg-slate-900/90 border border-slate-700/80 shadow-2xl p-4 sm:p-5 backdrop-blur-xl overflow-hidden transition-all duration-300 hover:scale-[1.02]">
+                  {/* Top Status Bar */}
+                  <div className="flex items-center justify-between pb-3 px-1 border-b border-slate-800/80 text-xs text-slate-400">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="font-semibold text-slate-200">TapLink Smart NFC Card</span>
                     </div>
-                    <div className="font-bold text-white text-base">{activeCustomer.name}</div>
-                    {activeCustomer.businessName && (
-                      <div className="text-xs text-indigo-400 font-semibold">{activeCustomer.businessName}</div>
-                    )}
-                    {activeCustomer.bio && (
-                      <div className="text-[11px] text-slate-300 line-clamp-2 px-2 leading-relaxed">
-                        {activeCustomer.bio}
-                      </div>
-                    )}
+                    <span className="font-mono text-[11px] text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-full border border-indigo-500/20">
+                      Dual-Sided NFC + QR
+                    </span>
                   </div>
 
-                  {/* Sample Action Buttons inside phone mockup */}
-                  <div className="space-y-2 pt-2">
-                    <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-white text-xs font-semibold">
-                      <div className="w-7 h-7 rounded-lg bg-[#25D366] flex items-center justify-center text-white shrink-0">
-                        <MessageCircle className="w-4 h-4 fill-current" />
-                      </div>
-                      <span className="truncate">Chat on WhatsApp</span>
-                    </div>
+                  {/* Main Card Image Showcase */}
+                  <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mt-3 shadow-2xl bg-black border border-slate-800 group-hover:border-indigo-500/40 transition-colors">
+                    <Image
+                      src="/cards/mainpage.jpg"
+                      alt="TapLink Smart NFC Social Business Card"
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, 480px"
+                      className="object-contain transform transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
 
-                    <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-white text-xs font-semibold">
-                      <div className="w-7 h-7 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 shrink-0">
-                        <Star className="w-4 h-4 fill-current" />
-                      </div>
-                      <span className="truncate">Google Review (5★)</span>
+                  {/* Feature Bullets below Card */}
+                  <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-800/80">
+                    <div className="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+                      <Radio className="w-4 h-4 text-emerald-400 shrink-0 animate-pulse" />
+                      <span className="font-medium">Instant NFC Tap</span>
                     </div>
-
-                    <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-purple-500/15 border border-purple-500/30 text-white text-xs font-semibold">
-                      <div className="w-7 h-7 rounded-lg bg-purple-600 flex items-center justify-center text-white shrink-0">
-                        <CreditCard className="w-4 h-4" />
-                      </div>
-                      <span className="truncate">Pay via UPI</span>
+                    <div className="flex items-center gap-2 text-xs text-slate-300 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800">
+                      <QrCode className="w-4 h-4 text-indigo-400 shrink-0" />
+                      <span className="font-medium">Dynamic QR Code</span>
                     </div>
                   </div>
 
-                  {/* Open Live Profile Link */}
-                  <div className="pt-2">
-                    <Link
-                      href={`/${activeCustomer.username}`}
-                      target="_blank"
-                      className="w-full py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-md"
+                  {/* Call-to-action on Card */}
+                  <div className="mt-3">
+                    <button
+                      onClick={() => handleOrderWhatsApp("TapLink Smart NFC Card")}
+                      className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 transition-all hover:scale-[1.01]"
                     >
-                      <span>Open Live Profile</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </Link>
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Order This NFC Card on WhatsApp</span>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -353,30 +344,30 @@ export default function HomePage() {
           <div className="text-center max-w-3xl mx-auto space-y-4">
             <span className="text-xs uppercase tracking-widest text-indigo-400 font-extrabold flex items-center justify-center gap-1.5">
               <Radio className="w-4 h-4 text-indigo-400" />
-              <span>Premium Hardware Collection</span>
+              <span>Real Hardware Showcase & Catalog</span>
             </span>
             <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-              NFC Smart Business Cards Gallery
+              NFC Smart Cards & Standees Gallery
             </h2>
             <p className="text-slate-400 text-sm sm:text-base">
-              Explore our lineup of custom-engraved metal, sustainable wood, and sleek frosted acrylic cards.
-              Tap to any phone to share your TapLink profile in less than 0.1 seconds.
+              Engineered with contactless high-speed NFC microchips and high-definition dynamic QR backup.
+              Explore specialized cards built for Clinics, Google Reviews, Instagram, Facebook, Dining Menus, and Corporate LinkedIn.
             </p>
           </div>
 
           {/* Gallery Category Selector */}
-          <div className="flex flex-wrap items-center justify-center gap-2 p-2 rounded-2xl bg-[#131d33] border border-slate-800 max-w-4xl mx-auto shadow-2xl">
+          <div className="flex flex-wrap items-center justify-center gap-2 p-2 rounded-2xl bg-[#131d33] border border-slate-800 max-w-5xl mx-auto shadow-2xl">
             {NFC_CARDS_CATALOG.map((card, idx) => (
               <button
                 key={card.id}
                 onClick={() => setSelectedGalleryCard(idx)}
-                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
                   selectedGalleryCard === idx
                     ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 scale-105"
                     : "text-slate-400 hover:text-white hover:bg-slate-800/60"
                 }`}
               >
-                <span>{card.name}</span>
+                <span>{card.category}</span>
                 {card.badge && (
                   <span className={`text-[10px] px-2 py-0.5 rounded-full border ${card.tagColor}`}>
                     {card.badge}
@@ -390,58 +381,48 @@ export default function HomePage() {
           {(() => {
             const currentCard = NFC_CARDS_CATALOG[selectedGalleryCard];
             return (
-              <div className="grid lg:grid-cols-12 gap-8 items-center bg-[#131d33]/80 border border-slate-800 rounded-3xl p-8 lg:p-12 shadow-2xl backdrop-blur-md">
-                {/* 3D Animated Card Preview */}
-                <div className="lg:col-span-6 flex justify-center items-center py-6">
-                  <div className="w-full max-w-[420px] aspect-[1.586] rounded-3xl bg-gradient-to-tr from-slate-950 via-neutral-900 to-slate-900 border-2 border-slate-700/80 p-7 flex flex-col justify-between shadow-2xl relative overflow-hidden group transform hover:scale-[1.03] hover:-rotate-1 transition-all duration-300">
+              <div className="grid lg:grid-cols-12 gap-8 items-center bg-[#131d33]/80 border border-slate-800 rounded-3xl p-6 sm:p-8 lg:p-12 shadow-2xl backdrop-blur-md">
+                {/* Real Card Graphic Showcase */}
+                <div className="lg:col-span-6 flex justify-center items-center">
+                  <div className="w-full max-w-[460px] rounded-3xl bg-gradient-to-tr from-slate-950 via-neutral-900 to-slate-900 border-2 border-slate-700/80 p-4 sm:p-5 shadow-2xl relative overflow-hidden group transform hover:scale-[1.02] transition-all duration-300">
                     {/* Metallic Glow Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
 
-                    {/* Top of Card */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="relative w-8 h-8 rounded-xl overflow-hidden border border-indigo-500/40">
-                          <Image src="/logo.png" alt="TapLink" fill sizes="32px" className="object-cover" />
-                        </div>
-                        <span className="font-extrabold tracking-widest text-white text-base">TAPLINK</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-[11px] font-mono text-indigo-400">
-                        <Radio className="w-3.5 h-3.5 animate-pulse text-indigo-400" />
-                        <span>NFC READY</span>
-                      </div>
+                    {/* Card Image Display */}
+                    <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black border border-slate-800 shadow-inner">
+                      <Image
+                        src={currentCard.image}
+                        alt={currentCard.name}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 460px"
+                        className="object-contain"
+                        priority
+                      />
                     </div>
 
-                    {/* Center NFC Sensor Design */}
-                    <div className="flex items-center justify-between">
-                      <div className="w-12 h-10 rounded-lg bg-gradient-to-tr from-amber-400 via-yellow-400 to-amber-600 shadow-md flex items-center justify-center border border-amber-300/80">
-                        <div className="w-8 h-6 border border-amber-800/50 rounded-sm" />
+                    {/* Card Status Indicator */}
+                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-800/80">
+                      <div className="flex items-center gap-2">
+                        <Radio className="w-4 h-4 text-emerald-400 animate-pulse" />
+                        <span className="text-xs font-mono text-slate-300 font-semibold">Instant NFC Sensor</span>
                       </div>
-                      <div className="text-right">
-                        <div className="text-[10px] text-slate-400 uppercase font-mono tracking-widest">NXP CHIPSET</div>
-                        <div className="text-xs font-bold text-slate-200">{currentCard.chip}</div>
-                      </div>
-                    </div>
-
-                    {/* Bottom of Card */}
-                    <div className="flex items-end justify-between pt-4 border-t border-slate-800/80">
-                      <div>
-                        <div className="text-[10px] text-slate-400 uppercase tracking-widest">{currentCard.material}</div>
-                        <div className="text-sm font-bold text-white tracking-wider">{currentCard.name}</div>
-                      </div>
-                      <div className="font-mono text-xs text-indigo-400 font-bold tracking-tight">
-                        taplink.in
-                      </div>
+                      <span className="text-xs font-mono text-indigo-400 font-bold">taplink.in</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Card Details & Ordering */}
+                {/* Card Details & Ordering with SEO Highlights */}
                 <div className="lg:col-span-6 space-y-6 text-left">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-bold tracking-wide" style={{ backgroundColor: "rgba(99, 102, 241, 0.1)", borderColor: "rgba(99, 102, 241, 0.3)" }}>
-                    <span className="text-indigo-400">{currentCard.badge}</span>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`text-xs px-3 py-1 rounded-full border font-bold ${currentCard.tagColor}`}>
+                      {currentCard.badge}
+                    </span>
+                    <span className="text-xs px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-slate-300 font-semibold">
+                      {currentCard.category}
+                    </span>
                   </div>
 
-                  <h3 className="text-2xl sm:text-4xl font-extrabold text-white">
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight">
                     {currentCard.name}
                   </h3>
 
@@ -449,63 +430,98 @@ export default function HomePage() {
                     {currentCard.description}
                   </p>
 
-                  <div className="space-y-3 pt-2">
-                    <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span><strong>Material:</strong> {currentCard.material}</span>
+                  {/* Bullet Specs */}
+                  <div className="space-y-2.5 pt-2">
+                    <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-200">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span><strong>Ideal For:</strong> {currentCard.idealFor}</span>
                     </div>
-                    <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span><strong>Finish:</strong> {currentCard.finish}</span>
+                    <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-200">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span><strong>Material & Finish:</strong> {currentCard.material} ({currentCard.finish})</span>
                     </div>
-                    <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span><strong>Technology:</strong> {currentCard.chip}</span>
+                    <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-200">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span><strong>NFC Technology:</strong> {currentCard.chip}</span>
                     </div>
-                    <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <div className="flex items-start gap-3 text-xs sm:text-sm text-slate-200">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                       <span><strong>Durability:</strong> {currentCard.durability}</span>
                     </div>
                   </div>
 
+                  {/* SEO Keyword Badges */}
+                  <div className="pt-2">
+                    <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold mb-2">
+                      Optimized For:
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {currentCard.seoKeywords.split(",").map((kw, i) => (
+                        <span
+                          key={i}
+                          className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-slate-300"
+                        >
+                          {kw.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Order Button (No Phone Number in Text) */}
                   <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
                     <button
                       onClick={() => handleOrderWhatsApp(currentCard.name)}
                       className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm shadow-xl shadow-emerald-600/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                     >
                       <MessageCircle className="w-4 h-4" />
-                      <span>Order on WhatsApp (6306840513)</span>
+                      <span>Order on WhatsApp</span>
                     </button>
-                    <span className="text-xs text-slate-400">Custom branding & laser engraving included</span>
+                    <span className="text-xs text-slate-400">Custom business name & dynamic QR printed</span>
                   </div>
                 </div>
               </div>
             );
           })()}
 
-          {/* Grid View of all Available Cards */}
+          {/* Grid View of all 6 Available Cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
             {NFC_CARDS_CATALOG.map((card, idx) => (
               <div
                 key={card.id}
                 onClick={() => setSelectedGalleryCard(idx)}
-                className={`cursor-pointer rounded-3xl p-6 border transition-all space-y-4 ${
+                className={`cursor-pointer rounded-3xl p-5 border transition-all space-y-4 flex flex-col justify-between ${
                   selectedGalleryCard === idx
                     ? "bg-[#162342] border-indigo-500 shadow-xl shadow-indigo-500/20"
                     : "bg-[#131d33]/60 border-slate-800 hover:border-slate-700"
                 }`}
               >
-                <div className="flex items-center justify-between">
-                  <span className={`text-[10px] px-2.5 py-0.5 rounded-full border font-semibold ${card.tagColor}`}>
-                    {card.badge}
-                  </span>
-                  <Radio className={`w-4 h-4 ${selectedGalleryCard === idx ? "text-indigo-400" : "text-slate-500"}`} />
+                <div className="space-y-4">
+                  {/* Card Thumbnail */}
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black border border-slate-800">
+                    <Image
+                      src={card.image}
+                      alt={card.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 360px"
+                      className="object-contain"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className={`text-[10px] px-2.5 py-0.5 rounded-full border font-semibold ${card.tagColor}`}>
+                      {card.badge}
+                    </span>
+                    <Radio className={`w-4 h-4 ${selectedGalleryCard === idx ? "text-indigo-400" : "text-slate-500"}`} />
+                  </div>
+
+                  <div>
+                    <h4 className="font-bold text-white text-base leading-snug">{card.name}</h4>
+                    <p className="text-xs text-slate-400 mt-1">{card.idealFor}</p>
+                  </div>
+
+                  <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">{card.description}</p>
                 </div>
-                <div>
-                  <h4 className="font-bold text-white text-base">{card.name}</h4>
-                  <p className="text-xs text-slate-400 mt-1">{card.material}</p>
-                </div>
-                <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">{card.description}</p>
+
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -621,7 +637,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-white">Choose Your NFC Card</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Select your favorite card material (Matte Black, Luxury Gold, Bamboo Wood) with custom engraving.
+                Select your preferred smart card (Google Reviews, Instagram, Medical Clinic, Restaurant Menu, or LinkedIn).
               </p>
             </div>
 
@@ -632,7 +648,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-white">Tap NFC or Scan QR</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Hold your TapLink NFC smart card near any modern smartphone or display your high-res standee QR.
+                Hold your TapLink NFC smart card near any modern smartphone or scan the high-definition printed QR code.
               </p>
             </div>
 
@@ -643,7 +659,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-white">Instant Connection & Sales</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Your customer instantly accesses WhatsApp, social media, and UPI payments with zero app installation.
+                Your customer instantly accesses WhatsApp, reviews, socials, and UPI payments with zero app installation.
               </p>
             </div>
           </div>
@@ -766,8 +782,6 @@ export default function HomePage() {
             <Link href="/rahul" className="hover:text-indigo-400 transition-colors">
               Demo Profile
             </Link>
-            <span className="text-slate-600">&bull;</span>
-            <span className="text-slate-400">Official WhatsApp: +91 6306840513</span>
           </div>
         </div>
       </footer>
