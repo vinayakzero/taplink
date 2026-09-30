@@ -8,15 +8,12 @@ import {
   MessageCircle,
   Star,
   CreditCard,
-  ArrowRight,
   CheckCircle2,
   ExternalLink,
   BarChart3,
   Globe,
   Radio,
   Lock,
-  X,
-  Check,
   Layers,
 } from "lucide-react";
 import { INITIAL_CUSTOMERS } from "@/lib/data-service";
@@ -94,27 +91,36 @@ const NFC_CARDS_CATALOG = [
 export default function HomePage() {
   const [activeDemoTab, setActiveDemoTab] = useState(0);
   const [selectedGalleryCard, setSelectedGalleryCard] = useState(0);
-  const [showOrderModal, setShowOrderModal] = useState(false);
-  const [orderCardType, setOrderCardType] = useState("Matte Black Stealth Metal");
-  const [orderForm, setOrderForm] = useState({ name: "", phone: "", business: "", notes: "" });
-  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [activeNav, setActiveNav] = useState("features");
 
   const activeCustomer = INITIAL_CUSTOMERS[activeDemoTab];
 
-  const handleOpenOrder = (cardName?: string) => {
-    if (cardName) setOrderCardType(cardName);
-    setOrderSuccess(false);
-    setShowOrderModal(true);
+  // Direct WhatsApp Order Handler pointing to 6306840513
+  const handleOrderWhatsApp = (cardName?: string) => {
+    const cardText = cardName ? ` for "${cardName}"` : "";
+    const message = `Hello TapLink Team! I want to order a customized TapLink NFC Card${cardText}. Please share pricing, designs, and delivery details.`;
+    const waUrl = `https://wa.me/916306840513?text=${encodeURIComponent(message)}`;
+    if (typeof window !== "undefined") {
+      window.open(waUrl, "_blank");
+    }
   };
 
-  const handleSendWhatsAppOrder = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!orderForm.name || !orderForm.phone) return;
+  const navLinks = [
+    { id: "features", label: "Features" },
+    { id: "gallery", label: "NFC Cards Gallery" },
+    { id: "how-it-works", label: "How It Works" },
+    { id: "demos", label: "Live Demos" },
+    { id: "faq", label: "FAQ" },
+  ];
 
-    const message = `Hello TapLink Team! I want to order a TapLink NFC Card.\n\n*Card Type:* ${orderCardType}\n*Name:* ${orderForm.name}\n*Phone:* ${orderForm.phone}\n*Business:* ${orderForm.business || "Personal"}\n*Notes:* ${orderForm.notes || "None"}\n\nPlease share payment and delivery details.`;
-    const waUrl = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
-    window.open(waUrl, "_blank");
-    setOrderSuccess(true);
+  const scrollToSection = (id: string) => {
+    setActiveNav(id);
+    if (typeof document !== "undefined") {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   return (
@@ -122,8 +128,8 @@ export default function HomePage() {
       {/* Navigation Header */}
       <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-[#080c16]/90 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          {/* Brand Logo (Full Bleed Square) */}
           <Link href="/" className="flex items-center gap-3 group">
-            {/* Square Logo with Official Taplink Artwork */}
             <div className="relative w-11 h-11 rounded-2xl overflow-hidden shadow-lg shadow-indigo-600/30 border border-indigo-500/40 group-hover:scale-105 transition-transform shrink-0">
               <Image src="/logo.png" alt="TapLink Logo" fill sizes="44px" className="object-cover" priority />
             </div>
@@ -137,25 +143,28 @@ export default function HomePage() {
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <a href="#features" className="hover:text-white transition-colors">
-              Features
-            </a>
-            <a href="#gallery" className="hover:text-white transition-colors text-indigo-400 font-semibold">
-              NFC Cards Gallery
-            </a>
-            <a href="#how-it-works" className="hover:text-white transition-colors">
-              How It Works
-            </a>
-            <a href="#demos" className="hover:text-white transition-colors">
-              Live Demos
-            </a>
-            <a href="#faq" className="hover:text-white transition-colors">
-              FAQ
-            </a>
+          {/* Interactive Navigation Links with Dynamic Active State */}
+          <nav className="hidden md:flex items-center gap-2 text-sm font-medium">
+            {navLinks.map((item) => {
+              const isActive = activeNav === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                    isActive
+                      ? "bg-indigo-600/20 text-indigo-400 border border-indigo-500/40 shadow-sm shadow-indigo-500/10 font-bold"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
           </nav>
 
           <div className="flex items-center gap-3">
+            {/* Admin Login Link */}
             <Link
               href="/admin/login"
               className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all border border-slate-700/80 flex items-center gap-1.5"
@@ -165,12 +174,13 @@ export default function HomePage() {
               <span>Admin Login</span>
             </Link>
 
+            {/* Direct WhatsApp Order Button */}
             <button
-              onClick={() => handleOpenOrder()}
-              className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-lg shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-1.5"
+              onClick={() => handleOrderWhatsApp()}
+              className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-lg shadow-emerald-600/30 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-1.5"
             >
-              <span>Order NFC Card</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>Order on WhatsApp</span>
             </button>
           </div>
         </div>
@@ -205,20 +215,20 @@ export default function HomePage() {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                 <button
-                  onClick={() => handleOpenOrder()}
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                  onClick={() => handleOrderWhatsApp()}
+                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-base shadow-xl shadow-emerald-600/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                 >
-                  <span>Order Your NFC Card</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <MessageCircle className="w-5 h-5" />
+                  <span>Order on WhatsApp (6306840513)</span>
                 </button>
 
-                <a
-                  href="#gallery"
+                <button
+                  onClick={() => scrollToSection("gallery")}
                   className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-bold text-base transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                 >
                   <span>View Cards Gallery</span>
                   <Layers className="w-5 h-5 text-indigo-400" />
-                </a>
+                </button>
               </div>
 
               {/* Trust Badges */}
@@ -460,11 +470,11 @@ export default function HomePage() {
 
                   <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
                     <button
-                      onClick={() => handleOpenOrder(currentCard.name)}
-                      className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                      onClick={() => handleOrderWhatsApp(currentCard.name)}
+                      className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm shadow-xl shadow-emerald-600/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                     >
                       <MessageCircle className="w-4 h-4" />
-                      <span>Order {currentCard.name}</span>
+                      <span>Order on WhatsApp (6306840513)</span>
                     </button>
                     <span className="text-xs text-slate-400">Custom branding & laser engraving included</span>
                   </div>
@@ -499,12 +509,12 @@ export default function HomePage() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleOpenOrder(card.name);
+                    handleOrderWhatsApp(card.name);
                   }}
-                  className="w-full py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-indigo-600 text-slate-200 hover:text-white text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                  className="w-full py-2.5 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 border border-emerald-500/30"
                 >
-                  <span>Select & Order</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  <span>Order on WhatsApp</span>
                 </button>
               </div>
             ))}
@@ -757,143 +767,10 @@ export default function HomePage() {
               Demo Profile
             </Link>
             <span className="text-slate-600">&bull;</span>
-            <span className="text-slate-400">Official: https://taplink.in</span>
+            <span className="text-slate-400">Official WhatsApp: +91 6306840513</span>
           </div>
         </div>
       </footer>
-
-      {/* ORDER NFC CARD MODAL */}
-      {showOrderModal && (
-        <div
-          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
-          onClick={() => setShowOrderModal(false)}
-        >
-          <div
-            className="bg-[#131d33] border border-slate-700/80 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-6 shadow-2xl relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              onClick={() => setShowOrderModal(false)}
-              className="absolute top-5 right-5 p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
-
-            {/* Header */}
-            <div className="flex items-center gap-3">
-              <div className="relative w-12 h-12 rounded-2xl overflow-hidden shadow-md border border-indigo-500/40 shrink-0">
-                <Image src="/logo.png" alt="TapLink" fill sizes="48px" className="object-cover" />
-              </div>
-              <div>
-                <h3 className="text-lg sm:text-xl font-bold text-white">Order TapLink NFC Card</h3>
-                <p className="text-xs text-slate-400">Custom engraved with your permanent digital profile.</p>
-              </div>
-            </div>
-
-            {orderSuccess ? (
-              <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-3">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
-                  <Check className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-bold text-white">Order Inquiry Sent!</h4>
-                <p className="text-xs text-slate-300">
-                  WhatsApp will open with your order details. Our executive will confirm your custom design and delivery.
-                </p>
-                <button
-                  onClick={() => setShowOrderModal(false)}
-                  className="mt-2 px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold"
-                >
-                  Done
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleSendWhatsAppOrder} className="space-y-4">
-                {/* Select Card Material */}
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-300">Select NFC Card Style</label>
-                  <select
-                    value={orderCardType}
-                    onChange={(e) => setOrderCardType(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500 font-semibold"
-                  >
-                    {NFC_CARDS_CATALOG.map((c) => (
-                      <option key={c.id} value={c.name} className="bg-slate-900 text-white">
-                        {c.name} ({c.material})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-300">
-                      Your Full Name <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={orderForm.name}
-                      onChange={(e) => setOrderForm({ ...orderForm, name: e.target.value })}
-                      placeholder="e.g. Rahul Sharma"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-slate-300">
-                      WhatsApp Number <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={orderForm.phone}
-                      onChange={(e) => setOrderForm({ ...orderForm, phone: e.target.value })}
-                      placeholder="+91 98765 43210"
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-300">Business / Company Name (Optional)</label>
-                  <input
-                    type="text"
-                    value={orderForm.business}
-                    onChange={(e) => setOrderForm({ ...orderForm, business: e.target.value })}
-                    placeholder="e.g. Verma Enterprises"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-slate-300">Special Notes or Custom Text (Optional)</label>
-                  <input
-                    type="text"
-                    value={orderForm.notes}
-                    onChange={(e) => setOrderForm({ ...orderForm, notes: e.target.value })}
-                    placeholder="e.g. Include company logo on back side"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm transition-all shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 active:scale-95"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    <span>Proceed & Order on WhatsApp</span>
-                  </button>
-                  <p className="text-[11px] text-center text-slate-400 mt-2">
-                    Instant response & bull; Custom design mockups shared on WhatsApp
-                  </p>
-                </div>
-              </form>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

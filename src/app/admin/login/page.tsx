@@ -4,12 +4,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Lock, Mail, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
+import { Lock, Mail, ArrowRight, AlertCircle } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@taplink.in");
-  const [password, setPassword] = useState("Taplink!@#$1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -33,16 +33,10 @@ export default function AdminLoginPage() {
       router.push("/admin");
       router.refresh();
     } catch (err: any) {
-      setError(err.message || "Invalid credentials. Please try again.");
+      setError(err.message || "Invalid email or password. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleFillDemo = () => {
-    setEmail("admin@taplink.in");
-    setPassword("Taplink!@#$1234");
-    setError(null);
   };
 
   return (
@@ -55,14 +49,14 @@ export default function AdminLoginPage() {
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-3 group">
             <div className="relative w-14 h-14 rounded-2xl overflow-hidden shadow-xl shadow-indigo-600/30 border border-indigo-500/40 group-hover:scale-105 transition-transform">
-              <Image src="/logo.png" alt="TapLink" fill sizes="56px" className="object-cover" />
+              <Image src="/logo.png" alt="TapLink Logo" fill sizes="56px" className="object-cover" priority />
             </div>
           </Link>
           <h1 className="text-2xl font-black text-white tracking-tight">TapLink Admin</h1>
           <p className="text-xs text-slate-400">Sign in to manage customers, NFC cards, and analytics</p>
         </div>
 
-        {/* Card */}
+        {/* Login Form Card */}
         <div className="rounded-3xl bg-[#131d33] border border-slate-800 p-8 shadow-2xl space-y-6">
           {error && (
             <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2.5">
@@ -81,7 +75,7 @@ export default function AdminLoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@taplink.in"
+                  placeholder="Enter your email"
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
                 />
               </div>
@@ -96,7 +90,7 @@ export default function AdminLoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
+                  placeholder="Enter your password"
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
                 />
               </div>
@@ -111,18 +105,6 @@ export default function AdminLoginPage() {
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
-
-          {/* Quick Helper */}
-          <div className="pt-4 border-t border-slate-800 text-center space-y-2">
-            <button
-              type="button"
-              onClick={handleFillDemo}
-              className="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-medium"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Auto-fill Admin Credentials</span>
-            </button>
-          </div>
         </div>
 
         <div className="text-center">
