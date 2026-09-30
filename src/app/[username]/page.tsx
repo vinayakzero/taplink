@@ -5,6 +5,9 @@ import ProfileView from "@/components/ProfileView";
 import Link from "next/link";
 import { AlertCircle, ArrowLeft } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 interface Props {
   params: Promise<{ username: string }>;
 }
@@ -48,19 +51,19 @@ export default async function CustomerProfilePage({ params }: Props) {
 
   if (!customer) {
     return (
-      <div className="min-h-screen bg-[#0b0f19] flex items-center justify-center p-4">
-        <div className="max-w-md w-full text-center bg-[#131d33] border border-slate-800 p-8 rounded-3xl space-y-5 shadow-2xl">
+      <div className="min-h-screen bg-[#070a13] flex items-center justify-center p-4">
+        <div className="max-w-md w-full text-center bg-[#0d1424] border border-slate-800 p-8 rounded-3xl space-y-5 shadow-2xl">
           <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto">
             <AlertCircle className="w-8 h-8" />
           </div>
           <h1 className="text-2xl font-bold text-white">Profile Not Found</h1>
           <p className="text-sm text-slate-400 leading-relaxed">
-            The TapLink profile for <span className="text-indigo-400 font-mono">@{username}</span> does not exist or may have been moved.
+            The TapLink profile for <span className="text-blue-400 font-mono">@{username}</span> does not exist or may have been moved.
           </p>
           <div className="pt-2">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-sm transition-all shadow-lg shadow-blue-600/20"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to TapLink</span>
@@ -73,8 +76,8 @@ export default async function CustomerProfilePage({ params }: Props) {
 
   if (!customer.isActive) {
     return (
-      <div className="min-h-screen bg-[#0b0f19] flex items-center justify-center p-4">
-        <div className="max-w-md w-full text-center bg-[#131d33] border border-slate-800 p-8 rounded-3xl space-y-5 shadow-2xl">
+      <div className="min-h-screen bg-[#070a13] flex items-center justify-center p-4">
+        <div className="max-w-md w-full text-center bg-[#0d1424] border border-slate-800 p-8 rounded-3xl space-y-5 shadow-2xl">
           <div className="w-16 h-16 rounded-2xl bg-slate-800 text-slate-400 flex items-center justify-center mx-auto">
             <AlertCircle className="w-8 h-8" />
           </div>

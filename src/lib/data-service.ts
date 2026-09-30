@@ -109,7 +109,9 @@ export async function getCustomerByUsername(username: string): Promise<CustomerD
     // Fallback to in-memory/file store
   }
 
-  const found = inMemoryCustomers.find((c) => c.username.toLowerCase() === normalized);
+  const customers = loadJson<CustomerData[]>(CUSTOMERS_FILE, inMemoryCustomers);
+  inMemoryCustomers = customers;
+  const found = customers.find((c) => c.username.toLowerCase() === normalized);
   return found || null;
 }
 
@@ -125,7 +127,9 @@ export async function getCustomerById(id: string): Promise<CustomerData | null> 
   } catch {
     // Fallback
   }
-  return inMemoryCustomers.find((c) => c.id === id) || null;
+  const customers = loadJson<CustomerData[]>(CUSTOMERS_FILE, inMemoryCustomers);
+  inMemoryCustomers = customers;
+  return customers.find((c) => c.id === id) || null;
 }
 
 /**
@@ -140,7 +144,9 @@ export async function getAllCustomers(): Promise<CustomerData[]> {
   } catch {
     // Fallback
   }
-  return inMemoryCustomers;
+  const customers = loadJson<CustomerData[]>(CUSTOMERS_FILE, inMemoryCustomers);
+  inMemoryCustomers = customers;
+  return customers;
 }
 
 /**

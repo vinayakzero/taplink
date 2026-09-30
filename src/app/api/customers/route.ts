@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { getAllCustomers, createCustomer, getCustomerByUsername } from "@/lib/data-service";
 import { getAdminSession } from "@/lib/auth";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const customers = await getAllCustomers();

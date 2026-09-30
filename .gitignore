@@ -37,3 +37,5 @@ next-env.d.ts
 # prisma sqlite fallback if used locally
 *.db
 *.db-journal
+
+.vercel
