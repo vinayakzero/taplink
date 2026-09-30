@@ -26,7 +26,7 @@ const HERO_SLIDER_ITEMS = [
   {
     id: "mainpage",
     title: "TapLink Social Smart NFC Card",
-    image: "/cards/mainpage.png",
+    image: "/cards/mainpage.jpg",
   },
   {
     id: "card-1",
@@ -362,10 +362,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Card Slider (Pure Clean 9:16 Image Slider with NO frames, NO borders, NO white edges, 100% mobile-friendly) */}
-            <div className="lg:col-span-5 flex flex-col items-center justify-center w-full px-2 sm:px-0">
+            {/* Right Card Slider (Large, prominent, borderless image slider) */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center w-full px-1 sm:px-0">
               <div
-                className="relative w-full max-w-[340px] sm:max-w-[400px] mx-auto select-none group"
+                className="relative w-full max-w-[500px] sm:max-w-[560px] lg:max-w-[600px] mx-auto select-none group"
                 onMouseEnter={() => setIsAutoPlayPaused(true)}
                 onMouseLeave={() => setIsAutoPlayPaused(false)}
                 onTouchStart={handleTouchStart}
@@ -375,8 +375,8 @@ export default function HomePage() {
                 {/* Soft ambient backlight glow */}
                 <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/15 via-indigo-600/20 to-purple-600/15 rounded-3xl blur-2xl opacity-70 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-                {/* Slider Image Canvas (9:16 portrait ratio) */}
-                <div className="relative w-full aspect-[9/16] flex items-center justify-center overflow-hidden">
+                {/* Slider Image Canvas */}
+                <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] flex items-center justify-center overflow-hidden rounded-2xl">
                   {HERO_SLIDER_ITEMS.map((slide, idx) => {
                     const isActive = idx === currentHeroSlide;
                     return (
@@ -394,8 +394,8 @@ export default function HomePage() {
                             alt={slide.title}
                             fill
                             priority={idx === 0}
-                            sizes="(max-width: 640px) 95vw, (max-width: 1024px) 460px, 480px"
-                            className="object-contain drop-shadow-2xl transition-transform duration-500 hover:scale-[1.02]"
+                            sizes="(max-width: 640px) 95vw, (max-width: 1024px) 520px, 600px"
+                            className="object-contain drop-shadow-2xl rounded-2xl transition-transform duration-500 hover:scale-[1.02]"
                           />
                         </div>
                       </div>
@@ -406,18 +406,18 @@ export default function HomePage() {
                   <button
                     onClick={handlePrevSlide}
                     aria-label="Previous card image"
-                    className="absolute left-1 sm:left-2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white flex items-center justify-center backdrop-blur-md border border-slate-700/50 shadow-lg transition-all hover:scale-110 active:scale-95 opacity-80 group-hover:opacity-100"
+                    className="absolute left-2 sm:left-3 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center backdrop-blur-md border border-slate-700/60 shadow-lg transition-all hover:scale-110 active:scale-95 opacity-80 group-hover:opacity-100"
                   >
-                    <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
 
                   {/* Right Arrow Button */}
                   <button
                     onClick={handleNextSlide}
                     aria-label="Next card image"
-                    className="absolute right-1 sm:right-2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white flex items-center justify-center backdrop-blur-md border border-slate-700/50 shadow-lg transition-all hover:scale-110 active:scale-95 opacity-80 group-hover:opacity-100"
+                    className="absolute right-2 sm:right-3 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center backdrop-blur-md border border-slate-700/60 shadow-lg transition-all hover:scale-110 active:scale-95 opacity-80 group-hover:opacity-100"
                   >
-                    <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
                 </div>
 
