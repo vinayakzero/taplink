@@ -12,7 +12,6 @@ import {
   MessageCircle,
   Star,
   CreditCard,
-  Phone,
 } from "lucide-react";
 
 export default function AddCustomerPage() {
@@ -42,7 +41,6 @@ export default function AddCustomerPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     if (name === "username") {
-      // sanitize username on the fly
       const clean = value.toLowerCase().replace(/[^a-z0-9_-]/g, "");
       setFormData((prev) => ({ ...prev, username: clean }));
     } else {
@@ -51,7 +49,6 @@ export default function AddCustomerPage() {
   };
 
   const handleNameBlur = () => {
-    // If username is empty, auto-slugify name
     if (!formData.username && formData.name) {
       const slug = formData.name
         .toLowerCase()
@@ -140,19 +137,19 @@ export default function AddCustomerPage() {
                   value={formData.name}
                   onChange={handleChange}
                   onBlur={handleNameBlur}
-                  placeholder="e.g. Rahul Verma"
+                  placeholder="e.g. Rahul"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300">Business / Company Name</label>
+                <label className="text-xs font-semibold text-slate-300">Business / Company Name (Optional)</label>
                 <input
                   type="text"
                   name="businessName"
                   value={formData.businessName}
                   onChange={handleChange}
-                  placeholder="e.g. Verma Tech Consulting"
+                  placeholder="e.g. ABC Salon"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
                 />
               </div>
@@ -178,12 +175,12 @@ export default function AddCustomerPage() {
                 />
               </div>
               <p className="text-[11px] text-slate-400">
-                This forms the permanent NFC & QR link: <span className="text-indigo-400 font-mono">https://taplink.in/{formData.username || "username"}</span>
+                Permanent NFC & QR link: <span className="text-indigo-400 font-mono">https://taplink.in/{formData.username || "username"}</span>
               </p>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-300">Profile Photo URL (or Image link)</label>
+              <label className="text-xs font-semibold text-slate-300">Profile Photo URL</label>
               <input
                 type="url"
                 name="profileImage"
@@ -195,13 +192,13 @@ export default function AddCustomerPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-300">Bio / Description</label>
+              <label className="text-xs font-semibold text-slate-300">Bio / Description (Optional)</label>
               <textarea
                 name="bio"
                 rows={3}
                 value={formData.bio}
                 onChange={handleChange}
-                placeholder="Brief description of your expertise, services, or salon/cafe offerings..."
+                placeholder="Brief description of your offerings..."
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
               />
             </div>
@@ -210,12 +207,12 @@ export default function AddCustomerPage() {
           {/* Section 2: Contact & Instant Messaging */}
           <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider text-emerald-400">
-              2. Direct Contact & WhatsApp
+              2. Phonebook Contact & WhatsApp
             </h2>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300">Phone Number (Call Me)</label>
+                <label className="text-xs font-semibold text-slate-300">Contact Number (For Save Contact to Phone)</label>
                 <input
                   type="text"
                   name="phone"
@@ -279,18 +276,6 @@ export default function AddCustomerPage() {
                   value={formData.googleReviewUrl}
                   onChange={handleChange}
                   placeholder="https://g.page/r/.../review"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300">Google Maps / Location URL</label>
-                <input
-                  type="url"
-                  name="locationUrl"
-                  value={formData.locationUrl}
-                  onChange={handleChange}
-                  placeholder="https://maps.google.com/?q=..."
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
                 />
               </div>
@@ -401,10 +386,12 @@ export default function AddCustomerPage() {
 
                 <div>
                   <h3 className="font-bold text-white text-base">{formData.name || "Customer Name"}</h3>
-                  <p className="text-xs text-indigo-400 font-semibold">{formData.businessName || "Business Name"}</p>
-                  <p className="text-xs text-slate-400 mt-2 line-clamp-3">
-                    {formData.bio || "Bio and profile description will appear here..."}
-                  </p>
+                  {formData.businessName && <p className="text-xs text-indigo-400 font-semibold">{formData.businessName}</p>}
+                  {formData.bio && (
+                    <p className="text-xs text-slate-400 mt-2 line-clamp-3">
+                      {formData.bio}
+                    </p>
+                  )}
                 </div>
 
                 {/* Preview buttons */}
@@ -413,13 +400,6 @@ export default function AddCustomerPage() {
                     <div className="p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold flex items-center gap-2">
                       <MessageCircle className="w-4 h-4" />
                       <span>Chat on WhatsApp</span>
-                    </div>
-                  )}
-
-                  {formData.phone && (
-                    <div className="p-2.5 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-300 font-semibold flex items-center gap-2">
-                      <Phone className="w-4 h-4" />
-                      <span>Call {formData.phone}</span>
                     </div>
                   )}
 

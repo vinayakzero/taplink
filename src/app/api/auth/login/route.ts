@@ -14,8 +14,8 @@ export async function POST(req: Request) {
     }
 
     const cleanEmail = email.toLowerCase().trim();
-    const defaultAdminEmail = (process.env.ADMIN_EMAIL || "admin@taplink.in").toLowerCase().trim();
-    const defaultAdminPassword = process.env.ADMIN_PASSWORD || "TapLinkAdmin2026!";
+    const defaultAdminEmail = (process.env.ADMIN_EMAIL || "admin@taplink.epsilon.org").toLowerCase().trim();
+    const defaultAdminPassword = process.env.ADMIN_PASSWORD || "admin#1234";
 
     let user = null;
     try {

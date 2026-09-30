@@ -10,12 +10,12 @@ import {
   MessageCircle,
   Star,
   CreditCard,
-  MapPin,
   ArrowRight,
   CheckCircle2,
   Sparkles,
   ExternalLink,
   BarChart3,
+  Globe,
 } from "lucide-react";
 import { INITIAL_CUSTOMERS } from "@/lib/data-service";
 import { QRCodeSVG } from "qrcode.react";
@@ -101,7 +101,7 @@ export default function HomePage() {
               </h1>
 
               <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
-                TapLink lets businesses connect customers to WhatsApp, social media, Google Reviews, website, location,
+                TapLink lets businesses connect customers to WhatsApp, social media, Google Reviews, website,
                 and instant UPI payments through one seamless NFC & QR profile.
               </p>
 
@@ -186,10 +186,14 @@ export default function HomePage() {
                       </div>
                     </div>
                     <div className="font-bold text-white text-base">{activeCustomer.name}</div>
-                    <div className="text-xs text-indigo-400 font-semibold">{activeCustomer.businessName}</div>
-                    <div className="text-[11px] text-slate-300 line-clamp-2 px-2 leading-relaxed">
-                      {activeCustomer.bio}
-                    </div>
+                    {activeCustomer.businessName && (
+                      <div className="text-xs text-indigo-400 font-semibold">{activeCustomer.businessName}</div>
+                    )}
+                    {activeCustomer.bio && (
+                      <div className="text-[11px] text-slate-300 line-clamp-2 px-2 leading-relaxed">
+                        {activeCustomer.bio}
+                      </div>
+                    )}
                   </div>
 
                   {/* Sample Action Buttons inside phone mockup */}
@@ -198,7 +202,7 @@ export default function HomePage() {
                       <div className="w-7 h-7 rounded-lg bg-[#25D366] flex items-center justify-center text-white shrink-0">
                         <MessageCircle className="w-4 h-4 fill-current" />
                       </div>
-                      <span className="truncate">WhatsApp Me</span>
+                      <span className="truncate">Chat on WhatsApp</span>
                     </div>
 
                     <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-white text-xs font-semibold">
@@ -283,17 +287,6 @@ export default function HomePage() {
 
             {/* Feature 4 */}
             <div className="p-8 rounded-3xl bg-[#131d33]/60 border border-slate-800 hover:border-indigo-500/40 transition-all hover:-translate-y-1 space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-400 flex items-center justify-center">
-                <MapPin className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-bold text-white">Store & Office Directions</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Guide walk-in footfall right to your doorstep with one click directly in Google Maps navigation.
-              </p>
-            </div>
-
-            {/* Feature 5 */}
-            <div className="p-8 rounded-3xl bg-[#131d33]/60 border border-slate-800 hover:border-indigo-500/40 transition-all hover:-translate-y-1 space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 flex items-center justify-center">
                 <QrCode className="w-7 h-7" />
               </div>
@@ -303,9 +296,20 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Feature 6 */}
+            {/* Feature 5 */}
             <div className="p-8 rounded-3xl bg-[#131d33]/60 border border-slate-800 hover:border-indigo-500/40 transition-all hover:-translate-y-1 space-y-4">
               <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center">
+                <Globe className="w-7 h-7" />
+              </div>
+              <h3 className="text-xl font-bold text-white">Socials & Website Hub</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">
+                Showcase Instagram, Facebook, YouTube channels, and official websites in one unified profile.
+              </p>
+            </div>
+
+            {/* Feature 6 */}
+            <div className="p-8 rounded-3xl bg-[#131d33]/60 border border-slate-800 hover:border-indigo-500/40 transition-all hover:-translate-y-1 space-y-4">
+              <div className="w-14 h-14 rounded-2xl bg-violet-500/10 border border-violet-500/30 text-violet-400 flex items-center justify-center">
                 <BarChart3 className="w-7 h-7" />
               </div>
               <h3 className="text-xl font-bold text-white">Real-Time Click Analytics</h3>
@@ -356,8 +360,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-white">Instant Connection & Sales</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Your customer instantly accesses WhatsApp, calls, Google Maps, social media, and payments with zero app
-                installation.
+                Your customer instantly accesses WhatsApp, social media, and UPI payments with zero app installation.
               </p>
             </div>
           </div>
@@ -392,7 +395,7 @@ export default function HomePage() {
                       <h4 className="font-bold text-white text-base group-hover:text-indigo-400 transition-colors">
                         {cust.name}
                       </h4>
-                      <p className="text-xs text-slate-400">{cust.businessName}</p>
+                      {cust.businessName && <p className="text-xs text-slate-400">{cust.businessName}</p>}
                     </div>
                   </div>
 
@@ -400,7 +403,7 @@ export default function HomePage() {
                     https://taplink.in/{cust.username}
                   </div>
 
-                  <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">{cust.bio}</p>
+                  {cust.bio && <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">{cust.bio}</p>}
                 </div>
 
                 <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
@@ -532,7 +535,7 @@ export default function HomePage() {
             </div>
 
             <div className="p-6 rounded-2xl bg-[#131d33]/50 border border-slate-800 space-y-2">
-              <h3 className="text-base font-bold text-white">What happens if I update my phone number or links?</h3>
+              <h3 className="text-base font-bold text-white">What happens if I update my profile details or links?</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
                 Your profile updates immediately in real-time from the admin dashboard. Your URL (
                 <span className="text-indigo-400">taplink.in/yourname</span>), physical NFC cards, and printed QR codes

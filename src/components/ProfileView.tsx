@@ -5,12 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   MessageCircle,
-  Phone,
   Instagram,
   Facebook,
   Youtube,
   Star,
-  MapPin,
   Globe,
   CreditCard,
   QrCode,
@@ -23,7 +21,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { CustomerData } from "@/lib/data-service";
-import { generateWhatsAppUrl, generateTelUrl, generateUpiPaymentUrl, normalizeUrl, formatInstagramUrl } from "@/lib/utils";
+import { generateWhatsAppUrl, generateUpiPaymentUrl, normalizeUrl, formatInstagramUrl } from "@/lib/utils";
 import { QRCodeSVG } from "qrcode.react";
 
 interface ProfileViewProps {
@@ -102,13 +100,11 @@ export default function ProfileView({ customer }: ProfileViewProps) {
   };
 
   const waUrl = customer.whatsapp ? generateWhatsAppUrl(customer.whatsapp, customer.whatsappMessage) : null;
-  const telUrl = customer.phone ? generateTelUrl(customer.phone) : null;
   const instaUrl = formatInstagramUrl(customer.instagramUrl);
   const fbUrl = normalizeUrl(customer.facebookUrl);
   const ytUrl = normalizeUrl(customer.youtubeUrl);
   const webUrl = normalizeUrl(customer.websiteUrl);
   const reviewUrl = normalizeUrl(customer.googleReviewUrl);
-  const mapUrl = normalizeUrl(customer.locationUrl);
   const upiPayUrl = customer.upiId ? generateUpiPaymentUrl(customer.upiId, customer.name || customer.businessName) : null;
 
   return (
@@ -185,11 +181,12 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             </p>
           )}
 
-          {/* Save Contact (vCard) Action */}
+          {/* Save Contact (vCard) Action - Direct Native Phonebook Download */}
           <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-center gap-3">
             <a
               href={`/api/vcard/${customer.username}`}
               onClick={() => trackClick("vcard_download")}
+              download={`${customer.username}.vcf`}
               className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-medium text-sm transition-all shadow-lg shadow-indigo-600/25 active:scale-95"
             >
               <UserPlus className="w-4 h-4" />
@@ -234,27 +231,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             </a>
           )}
 
-          {/* 2. Call Me Button */}
-          {telUrl && (
-            <a
-              href={telUrl}
-              onClick={() => trackClick("call_click")}
-              className="group flex items-center justify-between w-full p-4 rounded-2xl bg-[#131d33]/80 hover:bg-[#18243e] border border-slate-800/80 hover:border-slate-700 text-white transition-all transform hover:-translate-y-0.5 active:scale-[0.99] shadow-md"
-            >
-              <div className="flex items-center gap-3.5">
-                <div className="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/30 group-hover:scale-105 transition-transform">
-                  <Phone className="w-5 h-5 fill-current" />
-                </div>
-                <div className="text-left">
-                  <div className="font-semibold text-slate-100">Call Me</div>
-                  <p className="text-xs text-slate-400">{customer.phone}</p>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-blue-400 group-hover:translate-x-0.5 transition-all" />
-            </a>
-          )}
-
-          {/* 3. Google Review Button */}
+          {/* 2. Google Review Button */}
           {reviewUrl && (
             <a
               href={reviewUrl}
@@ -279,29 +256,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             </a>
           )}
 
-          {/* 4. Location / Directions Button */}
-          {mapUrl && (
-            <a
-              href={mapUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackClick("location_click")}
-              className="group flex items-center justify-between w-full p-4 rounded-2xl bg-[#131d33]/80 hover:bg-[#18243e] border border-slate-800/80 hover:border-slate-700 text-white transition-all transform hover:-translate-y-0.5 active:scale-[0.99] shadow-md"
-            >
-              <div className="flex items-center gap-3.5">
-                <div className="w-11 h-11 rounded-xl bg-rose-600 text-white flex items-center justify-center shadow-md shadow-rose-600/30 group-hover:scale-105 transition-transform">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <div className="font-semibold text-slate-100">Get Directions</div>
-                  <p className="text-xs text-slate-400">Open in Google Maps</p>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-rose-400 group-hover:translate-x-0.5 transition-all" />
-            </a>
-          )}
-
-          {/* 5. UPI / Payment Button */}
+          {/* 3. UPI / Payment Button */}
           {customer.upiId && (
             <div className="rounded-2xl bg-gradient-to-r from-purple-500/15 to-indigo-500/15 border border-purple-500/30 p-4 shadow-lg shadow-purple-950/20">
               <div className="flex items-center justify-between">
@@ -342,7 +297,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             </div>
           )}
 
-          {/* 6. Website Button */}
+          {/* 4. Website Button */}
           {webUrl && (
             <a
               href={webUrl}

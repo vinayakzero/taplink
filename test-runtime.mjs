@@ -1,5 +1,5 @@
 async function test() {
-  console.log("🔍 Testing TapLink live endpoints...\n");
+  console.log("🔍 Testing TapLink live endpoints with updated credentials & features...\n");
 
   const endpoints = [
     { name: "Homepage (GET /)", url: "http://localhost:3000/", method: "GET" },
@@ -22,14 +22,14 @@ async function test() {
     }
   }
 
-  // Test Admin Login POST
+  // Test Admin Login POST with new credentials
   try {
     const loginRes = await fetch("http://localhost:3000/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: "admin@taplink.in",
-        password: "TapLinkAdmin2026!",
+        email: "admin@taplink.epsilon.org",
+        password: "admin#1234",
       }),
     });
     const data = await loginRes.json();
@@ -45,7 +45,7 @@ async function test() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username: "rahul",
-        eventType: "whatsapp_click",
+        eventType: "vcard_download",
       }),
     });
     const trackData = await trackRes.json();
@@ -54,7 +54,7 @@ async function test() {
     console.error("❌ Analytics Track Error:", err.message);
   }
 
-  console.log("\n🚀 All tests finished successfully!");
+  console.log("\n🚀 All updated tests finished successfully!");
 }
 
 test();

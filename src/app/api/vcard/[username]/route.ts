@@ -23,12 +23,13 @@ export async function GET(req: Request, context: { params: Promise<{ username: s
     profileUrl: `https://taplink.in/${customer.username}`,
   });
 
-  const filename = `${customer.username}-contact.vcf`;
+  const filename = `${customer.username}.vcf`;
 
   return new NextResponse(vCardContent, {
     headers: {
       "Content-Type": "text/vcard; charset=utf-8",
       "Content-Disposition": `attachment; filename="${filename}"`,
+      "Cache-Control": "no-cache",
     },
   });
 }

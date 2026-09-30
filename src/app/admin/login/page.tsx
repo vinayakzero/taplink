@@ -7,8 +7,8 @@ import { Zap, Lock, Mail, ArrowRight, AlertCircle, Sparkles } from "lucide-react
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@taplink.in");
-  const [password, setPassword] = useState("TapLinkAdmin2026!");
+  const [email, setEmail] = useState("admin@taplink.epsilon.org");
+  const [password, setPassword] = useState("admin#1234");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -39,8 +39,8 @@ export default function AdminLoginPage() {
   };
 
   const handleFillDemo = () => {
-    setEmail("admin@taplink.in");
-    setPassword("TapLinkAdmin2026!");
+    setEmail("admin@taplink.epsilon.org");
+    setPassword("admin#1234");
     setError(null);
   };
 
@@ -80,7 +80,7 @@ export default function AdminLoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@taplink.in"
+                  placeholder="admin@taplink.epsilon.org"
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white text-sm focus:outline-none focus:border-indigo-500 transition-colors"
                 />
               </div>
@@ -119,7 +119,7 @@ export default function AdminLoginPage() {
               className="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-medium"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Auto-fill Demo Admin Credentials</span>
+              <span>Auto-fill Admin Credentials</span>
             </button>
           </div>
         </div>

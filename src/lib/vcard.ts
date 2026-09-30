@@ -10,42 +10,60 @@ export interface VCardOptions {
 }
 
 export function generateVCard(options: VCardOptions): string {
-  const parts = [
+  const nameParts = options.name.trim().split(/\s+/);
+  const firstName = nameParts[0] || options.name;
+  const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+
+  // Standard vCard 3.0 specification for iOS & Android address books
+  const lines = [
     "BEGIN:VCARD",
     "VERSION:3.0",
+    `N:${lastName};${firstName};;;`,
     `FN:${options.name}`,
   ];
 
   if (options.businessName) {
-    parts.push(`ORG:${options.businessName}`);
+    lines.push(`ORG:${options.businessName}`);
+    lines.push(`TITLE:${options.businessName}`);
   }
 
-  if (options.phone) {
-    const cleanPhone = options.phone.replace(/[^0-9+]/g, "");
-    parts.push(`TEL;TYPE=CELL,VOICE:${cleanPhone}`);
+  const primaryPhone = options.phone || options.whatsapp;
+  if (primaryPhone) {
+    const cleanPhone = primaryPhone.replace(/[^0-9+]/g, "");
+    const formattedPhone = cleanPhone.startsWith("+")
+      ? cleanPhone
+      : cleanPhone.length === 10
+      ? `+91${cleanPhone}`
+      : `+${cleanPhone}`;
+
+    lines.push(`TEL;TYPE=CELL,VOICE,PREF:${formattedPhone}`);
   }
 
   if (options.whatsapp && options.whatsapp !== options.phone) {
     const cleanWa = options.whatsapp.replace(/[^0-9+]/g, "");
-    parts.push(`TEL;TYPE=WORK,VOICE:${cleanWa}`);
+    const formattedWa = cleanWa.startsWith("+")
+      ? cleanWa
+      : cleanWa.length === 10
+      ? `+91${cleanWa}`
+      : `+${cleanWa}`;
+
+    lines.push(`TEL;TYPE=WORK,VOICE:${formattedWa}`);
   }
 
   if (options.email) {
-    parts.push(`EMAIL;TYPE=INTERNET,HOME:${options.email}`);
-  }
-
-  if (options.websiteUrl) {
-    parts.push(`URL;TYPE=WORK:${options.websiteUrl}`);
+    lines.push(`EMAIL;TYPE=INTERNET,HOME:${options.email.trim()}`);
   }
 
   if (options.profileUrl) {
-    parts.push(`URL;TYPE=TapLink Profile:${options.profileUrl}`);
+    lines.push(`URL;TYPE=WORK:${options.profileUrl}`);
+  } else if (options.websiteUrl) {
+    lines.push(`URL;TYPE=WORK:${options.websiteUrl}`);
   }
 
   if (options.bio) {
-    parts.push(`NOTE:${options.bio.replace(/\n/g, "\\n")}`);
+    lines.push(`NOTE:${options.bio.replace(/\r?\n/g, " ")}`);
   }
 
-  parts.push("END:VCARD");
-  return parts.join("\r\n");
+  lines.push("END:VCARD");
+  return lines.join("\r\n") + "\r\n";
 }
