@@ -18,7 +18,6 @@ import {
   Copy,
   ExternalLink,
   ShieldCheck,
-  Sparkles,
   Send,
   X,
 } from "lucide-react";
@@ -174,8 +173,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
           <h1 className="text-2xl font-bold text-white tracking-tight">{customer.name}</h1>
 
           {customer.businessName && (
-            <p className="text-sm font-semibold text-indigo-400 mt-1 flex items-center justify-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" />
+            <p className="text-sm font-semibold text-indigo-400 mt-1">
               {customer.businessName}
             </p>
           )}

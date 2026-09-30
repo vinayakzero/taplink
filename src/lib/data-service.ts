@@ -139,9 +139,9 @@ export const INITIAL_NFC_CARDS: NfcCardData[] = [
 ];
 
 // In-memory fallback repository when running without PostgreSQL connected
-const inMemoryCustomers: CustomerData[] = [...INITIAL_CUSTOMERS];
-const inMemoryNfcCards: NfcCardData[] = [...INITIAL_NFC_CARDS];
-const inMemoryEvents: AnalyticsEventData[] = [
+let inMemoryCustomers: CustomerData[] = [...INITIAL_CUSTOMERS];
+let inMemoryNfcCards: NfcCardData[] = [...INITIAL_NFC_CARDS];
+let inMemoryEvents: AnalyticsEventData[] = [
   { id: "ev-1", customerId: "cust-rahul-01", eventType: "profile_view", createdAt: new Date(Date.now() - 3600000 * 2) },
   { id: "ev-2", customerId: "cust-rahul-01", eventType: "whatsapp_click", createdAt: new Date(Date.now() - 3600000) },
   { id: "ev-3", customerId: "cust-rahul-01", eventType: "upi_click", createdAt: new Date(Date.now() - 1800000) },
@@ -279,7 +279,26 @@ export async function updateCustomer(
 }
 
 /**
- * Delete / Toggle Active customer
+ * Delete a customer and associated records
+ */
+export async function deleteCustomer(id: string): Promise<boolean> {
+  try {
+    await prisma.analyticsEvent.deleteMany({ where: { customerId: id } }).catch(() => {});
+    await prisma.nfcCard.deleteMany({ where: { customerId: id } }).catch(() => {});
+    await prisma.customer.delete({ where: { id } }).catch(() => {});
+  } catch {
+    // DB offline fallback
+  }
+
+  const initialLength = inMemoryCustomers.length;
+  inMemoryCustomers = inMemoryCustomers.filter((c) => c.id !== id);
+  inMemoryNfcCards = inMemoryNfcCards.filter((c) => c.customerId !== id);
+  inMemoryEvents = inMemoryEvents.filter((e) => e.customerId !== id);
+  return inMemoryCustomers.length < initialLength;
+}
+
+/**
+ * Toggle Active customer
  */
 export async function setCustomerStatus(id: string, isActive: boolean): Promise<boolean> {
   try {

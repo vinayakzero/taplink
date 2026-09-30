@@ -13,6 +13,7 @@ import {
   MessageCircle,
   Star,
   CreditCard,
+  Trash2,
 } from "lucide-react";
 
 export default function EditCustomerPage() {
@@ -22,6 +23,7 @@ export default function EditCustomerPage() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
@@ -126,6 +128,27 @@ export default function EditCustomerPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm(`Are you sure you want to permanently delete customer "${formData.name}"? This action cannot be undone.`)) {
+      return;
+    }
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/customers/${customerId}`, { method: "DELETE" });
+      if (res.ok) {
+        router.push("/admin/customers");
+        router.refresh();
+      } else {
+        const data = await res.json();
+        setError(data.error || "Failed to delete customer");
+      }
+    } catch {
+      setError("Failed to delete customer");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading) {
     return <div className="p-12 text-center text-slate-400 text-xs">Loading customer profile...</div>;
   }
@@ -147,14 +170,26 @@ export default function EditCustomerPage() {
           </div>
         </div>
 
-        <Link
-          href={`/${formData.username}`}
-          target="_blank"
-          className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-400 hover:text-indigo-300 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-700"
-        >
-          <span>View Live</span>
-          <ExternalLink className="w-3.5 h-3.5" />
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/${formData.username}`}
+            target="_blank"
+            className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-indigo-400 hover:text-indigo-300 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-700"
+          >
+            <span>View Live</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </Link>
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={deleting}
+            className="px-3.5 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 text-xs font-semibold flex items-center gap-1.5 transition-colors border border-red-500/30 disabled:opacity-50"
+            title="Delete Customer Profile"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>{deleting ? "Deleting..." : "Delete"}</span>
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -363,21 +398,40 @@ export default function EditCustomerPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-2">
+          <div className="flex items-center justify-between gap-3 pt-2">
+            <div className="flex items-center gap-3">
+              <button
+                type="submit"
+                disabled={saving}
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.98] flex items-center gap-2 disabled:opacity-50"
+              >
+                <Save className="w-4 h-4" />
+                <span>{saving ? "Saving Changes..." : "Save Changes"}</span>
+              </button>
+              <Link
+                href="/admin/customers"
+                className="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold transition-colors"
+              >
+                Cancel
+              </Link>
+            </div>
+          </div>
+
+          {/* Danger Zone: Delete Profile */}
+          <div className="p-6 rounded-3xl bg-red-950/20 border border-red-900/40 space-y-3">
+            <h3 className="text-xs font-bold text-red-400 uppercase tracking-wider">Danger Zone</h3>
+            <p className="text-xs text-slate-400">
+              Permanently delete this customer profile, QR codes, and analytics data. This action cannot be reversed.
+            </p>
             <button
-              type="submit"
-              disabled={saving}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.98] flex items-center gap-2 disabled:opacity-50"
+              type="button"
+              onClick={handleDelete}
+              disabled={deleting}
+              className="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-all flex items-center gap-2 shadow-lg shadow-red-600/20 disabled:opacity-50"
             >
-              <Save className="w-4 h-4" />
-              <span>{saving ? "Saving Changes..." : "Save Changes"}</span>
+              <Trash2 className="w-4 h-4" />
+              <span>{deleting ? "Deleting Customer..." : "Delete This Customer Profile"}</span>
             </button>
-            <Link
-              href="/admin/customers"
-              className="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold transition-colors"
-            >
-              Cancel
-            </Link>
           </div>
         </div>
 

@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { getCustomerById, updateCustomer, setCustomerStatus, getCustomerByUsername } from "@/lib/data-service";
+import { getCustomerById, updateCustomer, setCustomerStatus, getCustomerByUsername, deleteCustomer } from "@/lib/data-service";
 import { getAdminSession } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
 
 export async function GET(_req: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -73,13 +72,9 @@ export async function DELETE(_req: Request, context: { params: Promise<{ id: str
     }
 
     const { id } = await context.params;
-    try {
-      await prisma.customer.delete({ where: { id } });
-    } catch {
-      // Fallback
-    }
+    const deleted = await deleteCustomer(id);
 
-    return NextResponse.json({ success: true, message: "Customer deleted successfully" });
+    return NextResponse.json({ success: deleted, message: "Customer deleted successfully" });
   } catch {
     return NextResponse.json({ error: "Failed to delete customer" }, { status: 500 });
   }
