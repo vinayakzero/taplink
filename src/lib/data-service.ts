@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { prisma } from "./prisma";
 
 export interface CustomerData {
@@ -41,114 +43,45 @@ export interface AnalyticsEventData {
   metadata?: unknown;
 }
 
-// Built-in seed profiles updated as requested (removed verbose filler and Verma Tech Consulting)
-export const INITIAL_CUSTOMERS: CustomerData[] = [
-  {
-    id: "cust-rahul-01",
-    userId: "user-admin-01",
-    username: "rahul",
-    name: "Rahul",
-    businessName: null,
-    bio: null,
-    profileImage: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
-    phone: "+91 98765 43210",
-    whatsapp: "919876543210",
-    whatsappMessage: "Hi Rahul! I saw your TapLink profile and would like to connect.",
-    instagramUrl: "https://instagram.com/rahul",
-    facebookUrl: "https://facebook.com/rahul",
-    youtubeUrl: "https://youtube.com/@rahul",
-    websiteUrl: "https://taplink.in/rahul",
-    googleReviewUrl: "https://g.page/r/example-rahul/review",
-    locationUrl: null,
-    upiId: "rahul@okhdfcbank",
-    isActive: true,
-    createdAt: new Date("2026-01-15T10:00:00Z"),
-    updatedAt: new Date("2026-01-15T10:00:00Z"),
-  },
-  {
-    id: "cust-abc-salon-02",
-    userId: "user-admin-01",
-    username: "abc-salon",
-    name: "ABC Salon",
-    businessName: "Luxury Hair & Beauty Spa",
-    bio: "Hair styling, organic treatments, and beauty makeovers.",
-    profileImage: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80",
-    phone: "+91 98111 22334",
-    whatsapp: "919811122334",
-    whatsappMessage: "Hello ABC Salon! I'd like to book an appointment.",
-    instagramUrl: "https://instagram.com/abcluxurysalon",
-    facebookUrl: "https://facebook.com/abcluxurysalon",
-    youtubeUrl: "https://youtube.com/@abcsalonlooks",
-    websiteUrl: "https://abcsalon.in",
-    googleReviewUrl: "https://g.page/r/example-abc-salon/review",
-    locationUrl: null,
-    upiId: "abcsalon@icici",
-    isActive: true,
-    createdAt: new Date("2026-02-01T11:30:00Z"),
-    updatedAt: new Date("2026-02-01T11:30:00Z"),
-  },
-  {
-    id: "cust-sharma-cafe-03",
-    userId: "user-admin-01",
-    username: "sharma-cafe",
-    name: "Sharma Cafe",
-    businessName: "Fresh Brews & Bakery",
-    bio: "Artisanal coffee and fresh bakery items.",
-    profileImage: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80",
-    phone: "+91 99887 76655",
-    whatsapp: "919988776655",
-    whatsappMessage: "Hi Sharma Cafe! I'd like to reserve a table / place an order.",
-    instagramUrl: "https://instagram.com/sharmacafebakery",
-    facebookUrl: "https://facebook.com/sharmacafe",
-    youtubeUrl: "https://youtube.com/@sharmacaferecipes",
-    websiteUrl: "https://sharmacafe.in",
-    googleReviewUrl: "https://g.page/r/example-sharma-cafe/review",
-    locationUrl: null,
-    upiId: "sharmacafe@paytm",
-    isActive: true,
-    createdAt: new Date("2026-02-10T09:15:00Z"),
-    updatedAt: new Date("2026-02-10T09:15:00Z"),
-  },
-];
+// Data directory path for permanent disk persistence
+const DATA_DIR = path.join(process.cwd(), "data");
+const CUSTOMERS_FILE = path.join(DATA_DIR, "customers.json");
+const CARDS_FILE = path.join(DATA_DIR, "nfc-cards.json");
+const EVENTS_FILE = path.join(DATA_DIR, "analytics.json");
 
-export const INITIAL_NFC_CARDS: NfcCardData[] = [
-  {
-    id: "nfc-001",
-    customerId: "cust-rahul-01",
-    cardUid: "04:A2:8B:1A:6F:5E:80",
-    status: "ACTIVE",
-    createdAt: new Date("2026-01-16T12:00:00Z"),
-    updatedAt: new Date("2026-01-16T12:00:00Z"),
-  },
-  {
-    id: "nfc-002",
-    customerId: "cust-abc-salon-02",
-    cardUid: "04:C5:11:9D:3A:42:80",
-    status: "ACTIVE",
-    createdAt: new Date("2026-02-02T14:00:00Z"),
-    updatedAt: new Date("2026-02-02T14:00:00Z"),
-  },
-  {
-    id: "nfc-003",
-    customerId: "cust-sharma-cafe-03",
-    cardUid: "04:E9:55:7B:8C:19:80",
-    status: "ACTIVE",
-    createdAt: new Date("2026-02-11T16:00:00Z"),
-    updatedAt: new Date("2026-02-11T16:00:00Z"),
-  },
-];
+function ensureDataDir() {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+}
 
-// In-memory fallback repository when running without PostgreSQL connected
-let inMemoryCustomers: CustomerData[] = [...INITIAL_CUSTOMERS];
-let inMemoryNfcCards: NfcCardData[] = [...INITIAL_NFC_CARDS];
-let inMemoryEvents: AnalyticsEventData[] = [
-  { id: "ev-1", customerId: "cust-rahul-01", eventType: "profile_view", createdAt: new Date(Date.now() - 3600000 * 2) },
-  { id: "ev-2", customerId: "cust-rahul-01", eventType: "whatsapp_click", createdAt: new Date(Date.now() - 3600000) },
-  { id: "ev-3", customerId: "cust-rahul-01", eventType: "upi_click", createdAt: new Date(Date.now() - 1800000) },
-  { id: "ev-4", customerId: "cust-abc-salon-02", eventType: "profile_view", createdAt: new Date(Date.now() - 7200000) },
-  { id: "ev-5", customerId: "cust-abc-salon-02", eventType: "google_review_click", createdAt: new Date(Date.now() - 3600000) },
-  { id: "ev-6", customerId: "cust-sharma-cafe-03", eventType: "profile_view", createdAt: new Date(Date.now() - 14400000) },
-];
+function loadJson<T>(filePath: string, fallback: T): T {
+  try {
+    ensureDataDir();
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, "utf-8").replace(/^\uFEFF/, "").trim();
+      if (!content) return fallback;
+      return JSON.parse(content);
+    }
+  } catch (err) {
+    console.error(`Error loading ${filePath}:`, err);
+  }
+  return fallback;
+}
+
+function saveJson<T>(filePath: string, data: T) {
+  try {
+    ensureDataDir();
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
+  } catch (err) {
+    console.error(`Error saving ${filePath}:`, err);
+  }
+}
+
+// Initial in-memory state loaded from disk
+let inMemoryCustomers: CustomerData[] = loadJson<CustomerData[]>(CUSTOMERS_FILE, []);
+let inMemoryNfcCards: NfcCardData[] = loadJson<NfcCardData[]>(CARDS_FILE, []);
+let inMemoryEvents: AnalyticsEventData[] = loadJson<AnalyticsEventData[]>(EVENTS_FILE, []);
 
 /**
  * Get customer by username (case-insensitive)
@@ -161,7 +94,7 @@ export async function getCustomerByUsername(username: string): Promise<CustomerD
     });
     if (customer) return customer;
   } catch {
-    // Fallback to in-memory store
+    // Fallback to in-memory/file store
   }
 
   const found = inMemoryCustomers.find((c) => c.username.toLowerCase() === normalized);
@@ -238,9 +171,11 @@ export async function createCustomer(data: Omit<CustomerData, "id" | "createdAt"
       },
     });
     inMemoryCustomers.unshift(created);
+    saveJson(CUSTOMERS_FILE, inMemoryCustomers);
     return created;
   } catch {
     inMemoryCustomers.unshift(newCustomer);
+    saveJson(CUSTOMERS_FILE, inMemoryCustomers);
     return newCustomer;
   }
 }
@@ -263,6 +198,7 @@ export async function updateCustomer(
     });
     const idx = inMemoryCustomers.findIndex((c) => c.id === id);
     if (idx !== -1) inMemoryCustomers[idx] = updated;
+    saveJson(CUSTOMERS_FILE, inMemoryCustomers);
     return updated;
   } catch {
     const idx = inMemoryCustomers.findIndex((c) => c.id === id);
@@ -272,6 +208,7 @@ export async function updateCustomer(
         ...data,
         updatedAt: now,
       };
+      saveJson(CUSTOMERS_FILE, inMemoryCustomers);
       return inMemoryCustomers[idx];
     }
     return null;
@@ -279,7 +216,7 @@ export async function updateCustomer(
 }
 
 /**
- * Delete a customer and associated records
+ * Delete a customer and associated records permanently
  */
 export async function deleteCustomer(id: string): Promise<boolean> {
   try {
@@ -294,6 +231,11 @@ export async function deleteCustomer(id: string): Promise<boolean> {
   inMemoryCustomers = inMemoryCustomers.filter((c) => c.id !== id);
   inMemoryNfcCards = inMemoryNfcCards.filter((c) => c.customerId !== id);
   inMemoryEvents = inMemoryEvents.filter((e) => e.customerId !== id);
+
+  saveJson(CUSTOMERS_FILE, inMemoryCustomers);
+  saveJson(CARDS_FILE, inMemoryNfcCards);
+  saveJson(EVENTS_FILE, inMemoryEvents);
+
   return inMemoryCustomers.length < initialLength;
 }
 
@@ -312,6 +254,7 @@ export async function setCustomerStatus(id: string, isActive: boolean): Promise<
   const customer = inMemoryCustomers.find((c) => c.id === id);
   if (customer) {
     customer.isActive = isActive;
+    saveJson(CUSTOMERS_FILE, inMemoryCustomers);
     return true;
   }
   return false;
@@ -347,6 +290,7 @@ export async function trackAnalyticsEvent(
   }
 
   inMemoryEvents.push(eventData);
+  saveJson(EVENTS_FILE, inMemoryEvents);
   return true;
 }
 
@@ -392,9 +336,11 @@ export async function createNfcCard(customerId: string, cardUid: string, status 
       },
     });
     inMemoryNfcCards.unshift(created);
+    saveJson(CARDS_FILE, inMemoryNfcCards);
     return created;
   } catch {
     inMemoryNfcCards.unshift(newCard);
+    saveJson(CARDS_FILE, inMemoryNfcCards);
     return newCard;
   }
 }

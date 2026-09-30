@@ -18,7 +18,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { INITIAL_CUSTOMERS } from "@/lib/data-service";
+import type { CustomerData } from "@/lib/data-service";
 import { QRCodeSVG } from "qrcode.react";
 
 // Slider items for the hero section showcase (includes mainpage + all 6 gallery cards)
@@ -167,6 +167,7 @@ export default function HomePage() {
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const [selectedGalleryCard, setSelectedGalleryCard] = useState(0);
   const [activeNav, setActiveNav] = useState("features");
+  const [liveCustomers, setLiveCustomers] = useState<CustomerData[]>([]);
 
   // Autoplay hero card slider
   useEffect(() => {
@@ -176,6 +177,18 @@ export default function HomePage() {
     }, 3500);
     return () => clearInterval(timer);
   }, [isAutoPlayPaused]);
+
+  // Fetch live active customer profiles dynamically from API
+  useEffect(() => {
+    fetch("/api/customers")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.customers && Array.isArray(data.customers)) {
+          setLiveCustomers(data.customers.filter((c: CustomerData) => c.isActive));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handlePrevSlide = () => {
     setCurrentHeroSlide((prev) => (prev === 0 ? HERO_SLIDER_ITEMS.length - 1 : prev - 1));
@@ -222,7 +235,7 @@ export default function HomePage() {
     { id: "features", label: "Features" },
     { id: "gallery", label: "NFC Cards Gallery" },
     { id: "how-it-works", label: "How It Works" },
-    { id: "demos", label: "Live Demos" },
+    ...(liveCustomers.length > 0 ? [{ id: "demos", label: "Live Demos" }] : []),
     { id: "faq", label: "FAQ" },
   ];
 
@@ -779,64 +792,70 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* LIVE DEMOS SHOWCASE */}
-      <section id="demos" className="py-16 sm:py-20 bg-[#080c16] border-t border-slate-800/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-2 sm:space-y-3">
-            <span className="text-xs uppercase tracking-widest text-indigo-400 font-extrabold">Explore Live Profiles</span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-white">Experience TapLink in Action</h2>
-            <p className="text-slate-400 text-xs sm:text-sm">
-              Click any demo profile to see how it looks and works on live customer devices.
-            </p>
-          </div>
+      {/* LIVE DEMOS SHOWCASE (Only shown when active profiles exist) */}
+      {liveCustomers.length > 0 && (
+        <section id="demos" className="py-16 sm:py-20 bg-[#080c16] border-t border-slate-800/80">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 space-y-2 sm:space-y-3">
+              <span className="text-xs uppercase tracking-widest text-indigo-400 font-extrabold">Explore Live Profiles</span>
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-white">Experience TapLink in Action</h2>
+              <p className="text-slate-400 text-xs sm:text-sm">
+                Click any demo profile to see how it looks and works on live customer devices.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            {INITIAL_CUSTOMERS.map((cust) => (
-              <div
-                key={cust.id}
-                className="rounded-3xl bg-[#131d33] border border-slate-800 p-5 sm:p-6 flex flex-col justify-between space-y-5 sm:space-y-6 hover:border-indigo-500/50 transition-all hover:shadow-2xl hover:shadow-indigo-500/10 group"
-              >
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden bg-slate-800 shrink-0">
-                      {cust.profileImage && (
-                        <Image src={cust.profileImage} alt={cust.name} fill sizes="56px" className="object-cover" />
-                      )}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+              {liveCustomers.slice(0, 6).map((cust) => (
+                <div
+                  key={cust.id}
+                  className="rounded-3xl bg-[#131d33] border border-slate-800 p-5 sm:p-6 flex flex-col justify-between space-y-5 sm:space-y-6 hover:border-indigo-500/50 transition-all hover:shadow-2xl hover:shadow-indigo-500/10 group"
+                >
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center gap-3 sm:gap-4">
+                      <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden bg-slate-800 shrink-0">
+                        {cust.profileImage ? (
+                          <Image src={cust.profileImage} alt={cust.name} fill sizes="56px" className="object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-indigo-600 text-white font-bold text-lg">
+                            {cust.name.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-white text-sm sm:text-base group-hover:text-indigo-400 transition-colors">
+                          {cust.name}
+                        </h4>
+                        {cust.businessName && <p className="text-xs text-slate-400">{cust.businessName}</p>}
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-white text-sm sm:text-base group-hover:text-indigo-400 transition-colors">
-                        {cust.name}
-                      </h4>
-                      {cust.businessName && <p className="text-xs text-slate-400">{cust.businessName}</p>}
+
+                    <div className="text-xs text-indigo-400 font-mono bg-slate-900/90 py-1.5 px-3 rounded-xl border border-slate-800/80 truncate">
+                      https://taplink.in/{cust.username}
                     </div>
+
+                    {cust.bio && <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">{cust.bio}</p>}
                   </div>
 
-                  <div className="text-xs text-indigo-400 font-mono bg-slate-900/90 py-1.5 px-3 rounded-xl border border-slate-800/80 truncate">
-                    https://taplink.in/{cust.username}
-                  </div>
+                  <div className="pt-3 sm:pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                    <div className="p-1.5 sm:p-2 bg-white rounded-xl shadow-sm shrink-0">
+                      <QRCodeSVG value={`https://taplink.in/${cust.username}`} size={42} level="M" />
+                    </div>
 
-                  {cust.bio && <p className="text-xs text-slate-300 leading-relaxed line-clamp-3">{cust.bio}</p>}
+                    <Link
+                      href={`/${cust.username}`}
+                      target="_blank"
+                      className="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md shadow-indigo-600/30"
+                    >
+                      <span>View Profile</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
                 </div>
-
-                <div className="pt-3 sm:pt-4 border-t border-slate-800/80 flex items-center justify-between">
-                  <div className="p-1.5 sm:p-2 bg-white rounded-xl shadow-sm shrink-0">
-                    <QRCodeSVG value={`https://taplink.in/${cust.username}`} size={42} level="M" />
-                  </div>
-
-                  <Link
-                    href={`/${cust.username}`}
-                    target="_blank"
-                    className="px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-md shadow-indigo-600/30"
-                  >
-                    <span>View Profile</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* FAQ SECTION */}
       <section id="faq" className="py-16 sm:py-20 bg-[#0b0f19] border-t border-slate-800/80">
@@ -892,9 +911,11 @@ export default function HomePage() {
               <Lock className="w-3 h-3 text-slate-400" />
               <span>Admin Portal</span>
             </Link>
-            <Link href="/rahul" className="hover:text-indigo-400 transition-colors">
-              Demo Profile
-            </Link>
+            {liveCustomers.length > 0 && (
+              <Link href={`/${liveCustomers[0].username}`} className="hover:text-indigo-400 transition-colors">
+                Demo Profile
+              </Link>
+            )}
           </div>
         </div>
       </footer>
