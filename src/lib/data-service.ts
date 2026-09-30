@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { prisma } from "./prisma";
+import { getMongoDb, isMongoConfigured } from "./mongodb";
 
 export interface CustomerData {
   id: string;
@@ -43,7 +44,7 @@ export interface AnalyticsEventData {
   metadata?: unknown;
 }
 
-// Data directory path for permanent disk persistence
+// Data directory path for disk persistence
 const DATA_DIR = path.join(process.cwd(), "data");
 const CUSTOMERS_FILE = path.join(DATA_DIR, "customers.json");
 const CARDS_FILE = path.join(DATA_DIR, "nfc-cards.json");
@@ -80,7 +81,6 @@ function saveJson<T>(filePath: string, data: T) {
     ensureDataDir();
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
   } catch {
-    // If process.cwd() is read-only (e.g., on Vercel Serverless Functions), write to /tmp
     try {
       const tmpPath = path.join("/tmp", path.basename(filePath));
       fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), "utf-8");
@@ -90,7 +90,7 @@ function saveJson<T>(filePath: string, data: T) {
   }
 }
 
-// Initial in-memory state loaded from disk
+// In-memory cache loaded from disk
 let inMemoryCustomers: CustomerData[] = loadJson<CustomerData[]>(CUSTOMERS_FILE, []);
 let inMemoryNfcCards: NfcCardData[] = loadJson<NfcCardData[]>(CARDS_FILE, []);
 let inMemoryEvents: AnalyticsEventData[] = loadJson<AnalyticsEventData[]>(EVENTS_FILE, []);
@@ -100,6 +100,26 @@ let inMemoryEvents: AnalyticsEventData[] = loadJson<AnalyticsEventData[]>(EVENTS
  */
 export async function getCustomerByUsername(username: string): Promise<CustomerData | null> {
   const normalized = username.toLowerCase().trim();
+
+  // 1. Try MongoDB Atlas
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        const doc = await db.collection("customers").findOne({
+          username: { $regex: new RegExp(`^${normalized}$`, "i") },
+        });
+        if (doc) {
+          const { _id, ...rest } = doc as any;
+          return rest as CustomerData;
+        }
+      }
+    } catch (err) {
+      console.error("Mongo getCustomerByUsername error:", err);
+    }
+  }
+
+  // 2. Try PostgreSQL Prisma
   try {
     const customer = await prisma.customer.findUnique({
       where: { username: normalized },
@@ -109,6 +129,7 @@ export async function getCustomerByUsername(username: string): Promise<CustomerD
     // Fallback to in-memory/file store
   }
 
+  // 3. Fallback to JSON file / memory
   const customers = loadJson<CustomerData[]>(CUSTOMERS_FILE, inMemoryCustomers);
   inMemoryCustomers = customers;
   const found = customers.find((c) => c.username.toLowerCase() === normalized);
@@ -119,6 +140,23 @@ export async function getCustomerByUsername(username: string): Promise<CustomerD
  * Get customer by ID
  */
 export async function getCustomerById(id: string): Promise<CustomerData | null> {
+  // 1. Try MongoDB
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        const doc = await db.collection("customers").findOne({ id });
+        if (doc) {
+          const { _id, ...rest } = doc as any;
+          return rest as CustomerData;
+        }
+      }
+    } catch (err) {
+      console.error("Mongo getCustomerById error:", err);
+    }
+  }
+
+  // 2. Try PostgreSQL Prisma
   try {
     const customer = await prisma.customer.findUnique({
       where: { id },
@@ -127,6 +165,8 @@ export async function getCustomerById(id: string): Promise<CustomerData | null> 
   } catch {
     // Fallback
   }
+
+  // 3. Fallback to memory/file
   const customers = loadJson<CustomerData[]>(CUSTOMERS_FILE, inMemoryCustomers);
   inMemoryCustomers = customers;
   return customers.find((c) => c.id === id) || null;
@@ -136,6 +176,22 @@ export async function getCustomerById(id: string): Promise<CustomerData | null> 
  * Get all customers
  */
 export async function getAllCustomers(): Promise<CustomerData[]> {
+  // 1. Try MongoDB
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        const docs = await db.collection("customers").find({}).sort({ createdAt: -1 }).toArray();
+        if (docs && docs.length > 0) {
+          return docs.map(({ _id, ...rest }: any) => rest as CustomerData);
+        }
+      }
+    } catch (err) {
+      console.error("Mongo getAllCustomers error:", err);
+    }
+  }
+
+  // 2. Try PostgreSQL Prisma
   try {
     const customers = await prisma.customer.findMany({
       orderBy: { createdAt: "desc" },
@@ -144,6 +200,8 @@ export async function getAllCustomers(): Promise<CustomerData[]> {
   } catch {
     // Fallback
   }
+
+  // 3. Fallback to file/memory
   const customers = loadJson<CustomerData[]>(CUSTOMERS_FILE, inMemoryCustomers);
   inMemoryCustomers = customers;
   return customers;
@@ -165,6 +223,22 @@ export async function createCustomer(data: Omit<CustomerData, "id" | "createdAt"
     updatedAt: now,
   };
 
+  // 1. Try MongoDB
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection("customers").insertOne({ ...newCustomer });
+        inMemoryCustomers.unshift(newCustomer);
+        saveJson(CUSTOMERS_FILE, inMemoryCustomers);
+        return newCustomer;
+      }
+    } catch (err) {
+      console.error("Mongo createCustomer error:", err);
+    }
+  }
+
+  // 2. Try PostgreSQL Prisma
   try {
     const created = await prisma.customer.create({
       data: {
@@ -206,6 +280,28 @@ export async function updateCustomer(
   data: Partial<Omit<CustomerData, "id" | "createdAt">>
 ): Promise<CustomerData | null> {
   const now = new Date();
+
+  // 1. Try MongoDB
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection("customers").updateOne({ id }, { $set: { ...data, updatedAt: now } });
+        const updatedDoc = await db.collection("customers").findOne({ id });
+        if (updatedDoc) {
+          const { _id, ...rest } = updatedDoc as any;
+          const idx = inMemoryCustomers.findIndex((c) => c.id === id);
+          if (idx !== -1) inMemoryCustomers[idx] = rest as CustomerData;
+          saveJson(CUSTOMERS_FILE, inMemoryCustomers);
+          return rest as CustomerData;
+        }
+      }
+    } catch (err) {
+      console.error("Mongo updateCustomer error:", err);
+    }
+  }
+
+  // 2. Try PostgreSQL Prisma
   try {
     const updated = await prisma.customer.update({
       where: { id },
@@ -237,6 +333,21 @@ export async function updateCustomer(
  * Delete a customer and associated records permanently
  */
 export async function deleteCustomer(id: string): Promise<boolean> {
+  // 1. Try MongoDB
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection("customers").deleteOne({ id });
+        await db.collection("nfc_cards").deleteMany({ customerId: id });
+        await db.collection("analytics_events").deleteMany({ customerId: id });
+      }
+    } catch (err) {
+      console.error("Mongo deleteCustomer error:", err);
+    }
+  }
+
+  // 2. Try PostgreSQL Prisma
   try {
     await prisma.analyticsEvent.deleteMany({ where: { customerId: id } }).catch(() => {});
     await prisma.nfcCard.deleteMany({ where: { customerId: id } }).catch(() => {});
@@ -261,6 +372,17 @@ export async function deleteCustomer(id: string): Promise<boolean> {
  * Toggle Active customer
  */
 export async function setCustomerStatus(id: string, isActive: boolean): Promise<boolean> {
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection("customers").updateOne({ id }, { $set: { isActive, updatedAt: new Date() } });
+      }
+    } catch (err) {
+      console.error("Mongo setCustomerStatus error:", err);
+    }
+  }
+
   try {
     await prisma.customer.update({
       where: { id },
@@ -294,6 +416,17 @@ export async function trackAnalyticsEvent(
     metadata: metadata || null,
   };
 
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection("analytics_events").insertOne({ ...eventData });
+      }
+    } catch (err) {
+      console.error("Mongo trackAnalyticsEvent error:", err);
+    }
+  }
+
   try {
     await prisma.analyticsEvent.create({
       data: {
@@ -316,6 +449,22 @@ export async function trackAnalyticsEvent(
  * Get all NFC Cards
  */
 export async function getAllNfcCards(): Promise<NfcCardData[]> {
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        const docs = await db.collection("nfc_cards").find({}).sort({ createdAt: -1 }).toArray();
+        const allCustomers = await getAllCustomers();
+        return docs.map(({ _id, ...rest }: any) => ({
+          ...rest,
+          customer: allCustomers.find((c) => c.id === rest.customerId),
+        })) as NfcCardData[];
+      }
+    } catch (err) {
+      console.error("Mongo getAllNfcCards error:", err);
+    }
+  }
+
   try {
     const cards = await prisma.nfcCard.findMany({
       include: { customer: true },
@@ -344,6 +493,20 @@ export async function createNfcCard(customerId: string, cardUid: string, status 
     updatedAt: new Date(),
   };
 
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        await db.collection("nfc_cards").insertOne({ ...newCard });
+        inMemoryNfcCards.unshift(newCard);
+        saveJson(CARDS_FILE, inMemoryNfcCards);
+        return newCard;
+      }
+    } catch (err) {
+      console.error("Mongo createNfcCard error:", err);
+    }
+  }
+
   try {
     const created = await prisma.nfcCard.create({
       data: {
@@ -368,16 +531,32 @@ export async function createNfcCard(customerId: string, cardUid: string, status 
  */
 export async function getAnalyticsStats(customerId?: string) {
   let events = inMemoryEvents;
-  try {
-    const dbEvents = await prisma.analyticsEvent.findMany({
-      where: customerId ? { customerId } : undefined,
-      orderBy: { createdAt: "desc" },
-    });
-    if (dbEvents && dbEvents.length > 0) {
-      events = dbEvents as any;
+
+  if (isMongoConfigured()) {
+    try {
+      const db = await getMongoDb();
+      if (db) {
+        const filter = customerId ? { customerId } : {};
+        const docs = await db.collection("analytics_events").find(filter).sort({ createdAt: -1 }).toArray();
+        if (docs && docs.length > 0) {
+          events = docs.map(({ _id, ...rest }: any) => rest as AnalyticsEventData);
+        }
+      }
+    } catch (err) {
+      console.error("Mongo getAnalyticsStats error:", err);
     }
-  } catch {
-    // Fallback
+  } else {
+    try {
+      const dbEvents = await prisma.analyticsEvent.findMany({
+        where: customerId ? { customerId } : undefined,
+        orderBy: { createdAt: "desc" },
+      });
+      if (dbEvents && dbEvents.length > 0) {
+        events = dbEvents as any;
+      }
+    } catch {
+      // Fallback
+    }
   }
 
   const filtered = customerId ? events.filter((e) => e.customerId === customerId) : events;
