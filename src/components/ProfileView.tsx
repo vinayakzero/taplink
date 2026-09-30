@@ -19,6 +19,8 @@ import {
   ExternalLink,
   ShieldCheck,
   Sparkles,
+  Send,
+  X,
 } from "lucide-react";
 import { CustomerData } from "@/lib/data-service";
 import { generateWhatsAppUrl, generateUpiPaymentUrl, normalizeUrl, formatInstagramUrl } from "@/lib/utils";
@@ -32,6 +34,8 @@ export default function ProfileView({ customer }: ProfileViewProps) {
   const [copiedUpi, setCopiedUpi] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [showQrModal, setShowQrModal] = useState(false);
+  const [showUpiModal, setShowUpiModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   // Track profile view on initial mount
   useEffect(() => {
@@ -63,6 +67,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
   };
 
   const profileUrl = typeof window !== "undefined" ? window.location.href : `https://taplink.in/${customer.username}`;
+  const shareText = `Check out ${customer.name}'s TapLink digital profile: ${profileUrl}`;
 
   const handleCopyLink = () => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {
@@ -79,15 +84,15 @@ export default function ProfileView({ customer }: ProfileViewProps) {
       try {
         await navigator.share({
           title: `${customer.name} — TapLink`,
-          text: `Check out ${customer.name}'s digital profile on TapLink:`,
+          text: `Check out ${customer.name}'s digital profile:`,
           url: profileUrl,
         });
         return;
       } catch {
-        // Fallback to copy link
+        // Fallback to custom share modal
       }
     }
-    handleCopyLink();
+    setShowShareModal(true);
   };
 
   const handleCopyUpi = () => {
@@ -120,7 +125,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
           <div className="absolute top-4 right-4 flex items-center gap-2">
             <button
               onClick={() => setShowQrModal(true)}
-              title="Show QR Code"
+              title="Show Profile QR Code"
               className="p-2 rounded-full bg-slate-800/70 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700/60 shadow-sm"
               aria-label="View QR Code"
             >
@@ -181,7 +186,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             </p>
           )}
 
-          {/* Save Contact (vCard) Action - Direct Native Phonebook Download */}
+          {/* Save Contact (vCard) & Share Actions */}
           <div className="mt-5 pt-4 border-t border-slate-800/80 flex items-center justify-center gap-3">
             <a
               href={`/api/vcard/${customer.username}`}
@@ -256,9 +261,9 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             </a>
           )}
 
-          {/* 3. UPI / Payment Button */}
+          {/* 3. UPI / Payment Button with QR Scanner & Copy */}
           {customer.upiId && (
-            <div className="rounded-2xl bg-gradient-to-r from-purple-500/15 to-indigo-500/15 border border-purple-500/30 p-4 shadow-lg shadow-purple-950/20">
+            <div className="rounded-2xl bg-gradient-to-r from-purple-500/15 to-indigo-500/15 border border-purple-500/30 p-4 shadow-lg shadow-purple-950/20 space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3.5">
                   <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-purple-600/30">
@@ -276,6 +281,13 @@ export default function ProfileView({ customer }: ProfileViewProps) {
                 </div>
 
                 <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => setShowUpiModal(true)}
+                    title="Show UPI QR Code"
+                    className="p-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 hover:text-white transition-colors"
+                  >
+                    <QrCode className="w-4 h-4" />
+                  </button>
                   <button
                     onClick={handleCopyUpi}
                     title="Copy UPI ID"
@@ -391,7 +403,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
         </div>
       </div>
 
-      {/* QR Code Modal */}
+      {/* 1. Profile QR Code Modal */}
       {showQrModal && (
         <div
           className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
@@ -401,12 +413,17 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             className="bg-[#131d33] border border-slate-700/80 rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg font-bold text-white">Scan Profile QR Code</h3>
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+              <h3 className="text-base font-bold text-white">Scan Profile QR Code</h3>
+              <button onClick={() => setShowQrModal(false)} className="text-slate-400 hover:text-white">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
             <p className="text-xs text-slate-400">
               Scan with any camera or QR scanner to open {customer.name}&apos;s TapLink profile.
             </p>
 
-            {/* QR Container */}
             <div className="p-4 bg-white rounded-2xl inline-block mx-auto shadow-xl">
               <QRCodeSVG
                 value={profileUrl}
@@ -433,6 +450,123 @@ export default function ProfileView({ customer }: ProfileViewProps) {
                 className="py-2.5 px-5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition-colors"
               >
                 Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 2. UPI Scanner / Payment QR Modal */}
+      {showUpiModal && customer.upiId && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setShowUpiModal(false)}
+        >
+          <div
+            className="bg-[#131d33] border border-purple-500/40 rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+              <div className="flex items-center gap-2">
+                <CreditCard className="w-4 h-4 text-purple-400" />
+                <h3 className="text-base font-bold text-white">Scan & Pay via UPI</h3>
+              </div>
+              <button onClick={() => setShowUpiModal(false)} className="text-slate-400 hover:text-white">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-300">
+              Scan with <span className="font-semibold text-white">Google Pay, PhonePe, Paytm</span> or any UPI app.
+            </p>
+
+            {/* UPI QR Code */}
+            <div className="p-4 bg-white rounded-2xl inline-block mx-auto shadow-xl">
+              <QRCodeSVG
+                value={generateUpiPaymentUrl(customer.upiId, customer.name || customer.businessName)}
+                size={200}
+                level="H"
+                includeMargin={true}
+              />
+            </div>
+
+            <div className="bg-slate-900/90 py-2.5 px-3 rounded-xl border border-slate-800 text-xs">
+              <div className="text-[11px] text-slate-400">Payee UPI ID</div>
+              <div className="font-mono font-bold text-purple-300">{customer.upiId}</div>
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <button
+                onClick={handleCopyUpi}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-purple-600/30 hover:bg-purple-600/40 border border-purple-500/50 text-purple-200 font-medium text-xs transition-colors flex items-center justify-center gap-1.5"
+              >
+                {copiedUpi ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                <span>{copiedUpi ? "Copied UPI ID" : "Copy UPI ID"}</span>
+              </button>
+              {upiPayUrl && (
+                <a
+                  href={upiPayUrl}
+                  onClick={() => trackClick("upi_click")}
+                  className="py-2.5 px-5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs transition-colors"
+                >
+                  Pay Now
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 3. Share Profile Modal (Desktop / WhatsApp / Socials Fallback) */}
+      {showShareModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setShowShareModal(false)}
+        >
+          <div
+            className="bg-[#131d33] border border-slate-700/80 rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+              <h3 className="text-base font-bold text-white">Share {customer.name}&apos;s Profile</h3>
+              <button onClick={() => setShowShareModal(false)} className="text-slate-400 hover:text-white">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-400">Share this digital NFC profile with your network:</p>
+
+            <div className="grid grid-cols-2 gap-2.5 pt-1">
+              <a
+                href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackClick("share_click")}
+                className="p-3 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 font-semibold text-xs flex items-center justify-center gap-2 transition-colors"
+              >
+                <MessageCircle className="w-4 h-4 text-[#25D366]" />
+                <span>WhatsApp</span>
+              </a>
+
+              <a
+                href={`https://t.me/share/url?url=${encodeURIComponent(profileUrl)}&text=${encodeURIComponent(`Check out ${customer.name}'s profile on TapLink`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackClick("share_click")}
+                className="p-3 rounded-2xl bg-blue-500/15 hover:bg-blue-500/25 border border-blue-500/30 text-blue-300 font-semibold text-xs flex items-center justify-center gap-2 transition-colors"
+              >
+                <Send className="w-4 h-4 text-blue-400" />
+                <span>Telegram</span>
+              </a>
+            </div>
+
+            <div className="pt-2">
+              <button
+                onClick={handleCopyLink}
+                className="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center justify-center gap-2 transition-colors"
+              >
+                {copiedLink ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                <span>{copiedLink ? "Link Copied to Clipboard!" : "Copy Profile Link"}</span>
               </button>
             </div>
           </div>

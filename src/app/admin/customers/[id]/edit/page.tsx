@@ -10,6 +10,9 @@ import {
   AlertCircle,
   Smartphone,
   ExternalLink,
+  MessageCircle,
+  Star,
+  CreditCard,
 } from "lucide-react";
 
 export default function EditCustomerPage() {
@@ -190,7 +193,7 @@ export default function EditCustomerPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300">Business / Company Name</label>
+                <label className="text-xs font-semibold text-slate-300">Business Name (Optional)</label>
                 <input
                   type="text"
                   name="businessName"
@@ -230,7 +233,7 @@ export default function EditCustomerPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-300">Bio / Description</label>
+              <label className="text-xs font-semibold text-slate-300">Bio / Description (Optional)</label>
               <textarea
                 name="bio"
                 rows={3}
@@ -244,12 +247,12 @@ export default function EditCustomerPage() {
           {/* Section 2: Contact & WhatsApp */}
           <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider text-emerald-400">
-              2. Contact & WhatsApp
+              2. Phonebook Contact & WhatsApp
             </h2>
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300">Phone Number (Call Me)</label>
+                <label className="text-xs font-semibold text-slate-300">Phone Number (For Save Contact)</label>
                 <input
                   type="text"
                   name="phone"
@@ -307,17 +310,6 @@ export default function EditCustomerPage() {
                   type="url"
                   name="googleReviewUrl"
                   value={formData.googleReviewUrl}
-                  onChange={handleChange}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300">Google Maps / Location URL</label>
-                <input
-                  type="url"
-                  name="locationUrl"
-                  value={formData.locationUrl}
                   onChange={handleChange}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
                 />
@@ -422,8 +414,32 @@ export default function EditCustomerPage() {
 
                 <div>
                   <h3 className="font-bold text-white text-base">{formData.name || "Customer Name"}</h3>
-                  <p className="text-xs text-indigo-400 font-semibold">{formData.businessName || "Business Name"}</p>
-                  <p className="text-xs text-slate-400 mt-2 line-clamp-3">{formData.bio}</p>
+                  {formData.businessName && <p className="text-xs text-indigo-400 font-semibold">{formData.businessName}</p>}
+                  {formData.bio && <p className="text-xs text-slate-400 mt-2 line-clamp-3">{formData.bio}</p>}
+                </div>
+
+                {/* Preview buttons */}
+                <div className="space-y-2 pt-2 text-xs">
+                  {formData.whatsapp && (
+                    <div className="p-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-semibold flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Chat on WhatsApp</span>
+                    </div>
+                  )}
+
+                  {formData.googleReviewUrl && (
+                    <div className="p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-300 font-semibold flex items-center gap-2">
+                      <Star className="w-4 h-4" />
+                      <span>Give us a Google Review (5★)</span>
+                    </div>
+                  )}
+
+                  {formData.upiId && (
+                    <div className="p-2.5 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 font-semibold flex items-center gap-2">
+                      <CreditCard className="w-4 h-4" />
+                      <span>Pay via UPI ({formData.upiId})</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

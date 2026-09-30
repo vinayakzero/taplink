@@ -1,5 +1,5 @@
 async function test() {
-  console.log("🔍 Testing TapLink live endpoints with updated credentials & features...\n");
+  console.log("🔍 Testing TapLink live endpoints with admin@taplink.in / Taplink!@#$1234 ...\n");
 
   const endpoints = [
     { name: "Homepage (GET /)", url: "http://localhost:3000/", method: "GET" },
@@ -22,14 +22,14 @@ async function test() {
     }
   }
 
-  // Test Admin Login POST with new credentials
+  // Test Admin Login POST with admin@taplink.in / Taplink!@#$1234
   try {
     const loginRes = await fetch("http://localhost:3000/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: "admin@taplink.epsilon.org",
-        password: "admin#1234",
+        email: "admin@taplink.in",
+        password: "Taplink!@#$1234",
       }),
     });
     const data = await loginRes.json();

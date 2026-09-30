@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Starting TapLink database seed...");
 
-  // 1. Create Admin User with new credentials
-  const adminEmail = process.env.ADMIN_EMAIL || "admin@taplink.epsilon.org";
-  const adminPassword = process.env.ADMIN_PASSWORD || "admin#1234";
+  // 1. Create Admin User with user-specified credentials
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@taplink.in";
+  const adminPassword = process.env.ADMIN_PASSWORD || "Taplink!@#$1234";
   const passwordHash = await bcrypt.hash(adminPassword, 10);
 
   const admin = await prisma.user.upsert({
@@ -27,7 +27,7 @@ async function main() {
 
   console.log(`✅ Admin user created/verified: ${admin.email}`);
 
-  // 2. Create Default Customers from brief
+  // 2. Create Default Customers
   const seedCustomers = [
     {
       id: "cust-rahul-01",
