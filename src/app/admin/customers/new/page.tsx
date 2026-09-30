@@ -24,14 +24,19 @@ import {
   CheckSquare,
   Square,
   Sparkles,
+  Crop,
 } from "lucide-react";
+import ImageCropperModal from "@/components/ImageCropperModal";
 
 export default function AddCustomerPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [uploadingImage, setUploadingImage] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Image Cropping & Editing Modal State
+  const [rawImageToCrop, setRawImageToCrop] = useState<string>("");
+  const [isCropperOpen, setIsCropperOpen] = useState(false);
 
   // Enabled / Disabled Toggles for every profile feature
   const [enabledFeatures, setEnabledFeatures] = useState({
@@ -93,7 +98,7 @@ export default function AddCustomerPage() {
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -102,29 +107,21 @@ export default function AddCustomerPage() {
       return;
     }
 
-    setUploadingImage(true);
     setError(null);
-    try {
-      const data = new FormData();
-      data.append("file", file);
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
-      });
-
-      const resData = await res.json();
-      if (res.ok && resData.url) {
-        setFormData((prev) => ({ ...prev, profileImage: resData.url }));
-      } else {
-        throw new Error(resData.error || "Failed to upload image");
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      if (dataUrl) {
+        setRawImageToCrop(dataUrl);
+        setIsCropperOpen(true);
       }
-    } catch (err: any) {
-      setError(err.message || "Failed to upload image.");
-    } finally {
-      setUploadingImage(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    }
+    };
+    reader.readAsDataURL(file);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleCropComplete = (croppedDataUrl: string) => {
+    setFormData((prev) => ({ ...prev, profileImage: croppedDataUrl }));
   };
 
   const handleNameBlur = () => {
@@ -280,14 +277,27 @@ export default function AddCustomerPage() {
               <label className="text-xs font-semibold text-slate-300 flex items-center justify-between">
                 <span>Profile Photo (Upload from Gallery / Files)</span>
                 {formData.profileImage && (
-                  <button
-                    type="button"
-                    onClick={() => setFormData((prev) => ({ ...prev, profileImage: "" }))}
-                    className="text-[11px] text-red-400 hover:text-red-300 flex items-center gap-1"
-                  >
-                    <X className="w-3 h-3" />
-                    <span>Remove Photo</span>
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setRawImageToCrop(rawImageToCrop || formData.profileImage);
+                        setIsCropperOpen(true);
+                      }}
+                      className="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1 font-semibold"
+                    >
+                      <Crop className="w-3 h-3" />
+                      <span>Edit / Re-Crop Area</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, profileImage: "" }))}
+                      className="text-[11px] text-red-400 hover:text-red-300 flex items-center gap-1"
+                    >
+                      <X className="w-3 h-3" />
+                      <span>Remove Photo</span>
+                    </button>
+                  </div>
                 )}
               </label>
 
@@ -307,6 +317,7 @@ export default function AddCustomerPage() {
                       src={formData.profileImage}
                       alt="Profile preview"
                       fill
+                      unoptimized
                       sizes="80px"
                       className="object-cover"
                     />
@@ -317,17 +328,32 @@ export default function AddCustomerPage() {
 
                 {/* Upload Action */}
                 <div className="space-y-1.5 flex-1 w-full text-left">
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={uploadingImage}
-                    className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md shadow-blue-600/20 flex items-center gap-2 disabled:opacity-50"
-                  >
-                    <Upload className="w-3.5 h-3.5" />
-                    <span>{uploadingImage ? "Uploading Photo..." : "Upload from Gallery"}</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md shadow-blue-600/20 flex items-center gap-2"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>{formData.profileImage ? "Change Photo" : "Upload from Gallery"}</span>
+                    </button>
+
+                    {formData.profileImage && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRawImageToCrop(rawImageToCrop || formData.profileImage);
+                          setIsCropperOpen(true);
+                        }}
+                        className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-blue-300 hover:text-white text-xs font-semibold flex items-center gap-1.5 transition-colors border border-slate-700"
+                      >
+                        <Crop className="w-3.5 h-3.5" />
+                        <span>Adjust Area</span>
+                      </button>
+                    )}
+                  </div>
                   <p className="text-[11px] text-slate-400">
-                    Supports JPG, PNG, WEBP.
+                    Supports JPG, PNG, WEBP. Select image to zoom and crop desired area.
                   </p>
                 </div>
               </div>
@@ -815,6 +841,14 @@ export default function AddCustomerPage() {
           </div>
         </div>
       </form>
+
+      {/* Interactive Image Cropping & Area Selection Modal */}
+      <ImageCropperModal
+        imageSrc={rawImageToCrop}
+        isOpen={isCropperOpen}
+        onClose={() => setIsCropperOpen(false)}
+        onCropComplete={handleCropComplete}
+      />
     </div>
   );
 }
