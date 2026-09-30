@@ -4,34 +4,128 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  Smartphone,
   QrCode,
-  Zap,
   MessageCircle,
   Star,
   CreditCard,
   ArrowRight,
   CheckCircle2,
-  Sparkles,
   ExternalLink,
   BarChart3,
   Globe,
+  Radio,
+  Lock,
+  X,
+  Check,
+  Layers,
 } from "lucide-react";
 import { INITIAL_CUSTOMERS } from "@/lib/data-service";
 import { QRCodeSVG } from "qrcode.react";
 
+// Card catalog for Gallery Showcase
+const NFC_CARDS_CATALOG = [
+  {
+    id: "matte-black-metal",
+    name: "Matte Black Stealth Metal",
+    badge: "Most Popular",
+    material: "Aerospace Stainless Steel",
+    finish: "Matte Black with Precision Laser Engraving",
+    chip: "NXP NTAG216 (888 Bytes)",
+    durability: "Waterproof, Scratch-Resistant, 100k+ Taps",
+    accentColor: "from-slate-900 via-neutral-900 to-zinc-950",
+    borderColor: "border-slate-700",
+    tagColor: "bg-slate-800 text-slate-200 border-slate-700",
+    description: "Ultra-premium matte black metal card with a solid weighty feel and laser-etched branding.",
+  },
+  {
+    id: "luxury-gold-metal",
+    name: "24K Luxury Gold Metal",
+    badge: "VIP Edition",
+    material: "Mirror-Polished Brass Alloy",
+    finish: "24K Gold Mirror Finish & Deep Engraving",
+    chip: "NXP NTAG216 High-Power Antenna",
+    durability: "Heavyweight 22g Solid Metal, Lifetime NFC",
+    accentColor: "from-amber-950 via-yellow-950 to-amber-900",
+    borderColor: "border-amber-500/40",
+    tagColor: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+    description: "Executive-grade 24K mirror gold card designed for high-profile founders, executives, and luxury brands.",
+  },
+  {
+    id: "bamboo-wood",
+    name: "Eco-Friendly Bamboo Wood",
+    badge: "100% Sustainable",
+    material: "Real Natural Bamboo Wood",
+    finish: "Organic Grain with Fine Laser Etching",
+    chip: "Embedded Contactless Smart NFC",
+    durability: "Lightweight, Organic, Eco-Friendly",
+    accentColor: "from-amber-950/80 via-stone-900 to-neutral-950",
+    borderColor: "border-amber-800/40",
+    tagColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+    description: "Sustainable natural bamboo wood card with unique organic wood grain texture on every piece.",
+  },
+  {
+    id: "frosted-acrylic",
+    name: "Frosted Minimalist Acrylic",
+    badge: "Modern Aesthetic",
+    material: "Translucent Frosted Acrylic PVC",
+    finish: "Soft Matte Frosted with Spot UV QR",
+    chip: "Ultra-Thin High-Speed NFC Core",
+    durability: "100% Waterproof, Flexible & Durable",
+    accentColor: "from-indigo-950/60 via-slate-900 to-blue-950/60",
+    borderColor: "border-indigo-500/30",
+    tagColor: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
+    description: "Futuristic translucent frosted finish with smooth matte texture and vibrant QR print.",
+  },
+  {
+    id: "custom-branded",
+    name: "Custom Full-Color Branded",
+    badge: "Custom Artwork",
+    material: "Reinforced Composite Polymer",
+    finish: "Full Bleed CMYK + Holographic Foil",
+    chip: "Multi-Protocol Smart NFC Sensor",
+    durability: "Waterproof, Fade-Resistant, Heavy Gauge",
+    accentColor: "from-purple-950/60 via-slate-900 to-indigo-950/60",
+    borderColor: "border-purple-500/30",
+    tagColor: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+    description: "Tailor-made with your exact company logo, custom branding colors, and optional holographic foil.",
+  },
+];
+
 export default function HomePage() {
   const [activeDemoTab, setActiveDemoTab] = useState(0);
+  const [selectedGalleryCard, setSelectedGalleryCard] = useState(0);
+  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [orderCardType, setOrderCardType] = useState("Matte Black Stealth Metal");
+  const [orderForm, setOrderForm] = useState({ name: "", phone: "", business: "", notes: "" });
+  const [orderSuccess, setOrderSuccess] = useState(false);
+
   const activeCustomer = INITIAL_CUSTOMERS[activeDemoTab];
+
+  const handleOpenOrder = (cardName?: string) => {
+    if (cardName) setOrderCardType(cardName);
+    setOrderSuccess(false);
+    setShowOrderModal(true);
+  };
+
+  const handleSendWhatsAppOrder = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!orderForm.name || !orderForm.phone) return;
+
+    const message = `Hello TapLink Team! I want to order a TapLink NFC Card.\n\n*Card Type:* ${orderCardType}\n*Name:* ${orderForm.name}\n*Phone:* ${orderForm.phone}\n*Business:* ${orderForm.business || "Personal"}\n*Notes:* ${orderForm.notes || "None"}\n\nPlease share payment and delivery details.`;
+    const waUrl = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, "_blank");
+    setOrderSuccess(true);
+  };
 
   return (
     <div className="min-h-screen bg-[#080c16] text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
       {/* Navigation Header */}
-      <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-[#080c16]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-[#080c16]/90 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
-              <Zap className="w-6 h-6 text-white fill-current" />
+            {/* Square Logo with Official Taplink Artwork */}
+            <div className="relative w-11 h-11 rounded-2xl overflow-hidden shadow-lg shadow-indigo-600/30 border border-indigo-500/40 group-hover:scale-105 transition-transform shrink-0">
+              <Image src="/logo.png" alt="TapLink Logo" fill sizes="44px" className="object-cover" priority />
             </div>
             <div className="flex flex-col">
               <span className="text-2xl font-black tracking-tight text-white flex items-center gap-1">
@@ -47,14 +141,14 @@ export default function HomePage() {
             <a href="#features" className="hover:text-white transition-colors">
               Features
             </a>
+            <a href="#gallery" className="hover:text-white transition-colors text-indigo-400 font-semibold">
+              NFC Cards Gallery
+            </a>
             <a href="#how-it-works" className="hover:text-white transition-colors">
               How It Works
             </a>
             <a href="#demos" className="hover:text-white transition-colors">
               Live Demos
-            </a>
-            <a href="#nfc-card" className="hover:text-white transition-colors">
-              NFC Cards
             </a>
             <a href="#faq" className="hover:text-white transition-colors">
               FAQ
@@ -64,17 +158,20 @@ export default function HomePage() {
           <div className="flex items-center gap-3">
             <Link
               href="/admin/login"
-              className="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all border border-slate-800"
+              className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all border border-slate-700/80 flex items-center gap-1.5"
+              title="Admin Portal Login"
             >
-              Admin Login
+              <Lock className="w-3.5 h-3.5 text-indigo-400" />
+              <span>Admin Login</span>
             </Link>
-            <Link
-              href="/admin/customers/new"
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-lg shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-1.5"
+
+            <button
+              onClick={() => handleOpenOrder()}
+              className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 shadow-lg shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center gap-1.5"
             >
-              <span>Create Your TapLink</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+              <span>Order NFC Card</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
       </header>
@@ -91,8 +188,8 @@ export default function HomePage() {
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-8 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-500/30 text-indigo-300 text-xs font-semibold tracking-wide">
-                <Sparkles className="w-4 h-4 text-indigo-400" />
-                <span>Next-Gen Smart Business Profile</span>
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Smart NFC & QR Digital Business Profile</span>
               </div>
 
               <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1]">
@@ -107,20 +204,20 @@ export default function HomePage() {
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                <Link
-                  href="/admin/customers/new"
+                <button
+                  onClick={() => handleOpenOrder()}
                   className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                 >
-                  <span>Create Your TapLink</span>
+                  <span>Order Your NFC Card</span>
                   <ArrowRight className="w-5 h-5" />
-                </Link>
+                </button>
 
                 <a
-                  href="#demos"
+                  href="#gallery"
                   className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700/80 font-bold text-base transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                 >
-                  <span>See Demo</span>
-                  <Smartphone className="w-5 h-5 text-indigo-400" />
+                  <span>View Cards Gallery</span>
+                  <Layers className="w-5 h-5 text-indigo-400" />
                 </a>
               </div>
 
@@ -238,8 +335,185 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ANIMATED NFC CARDS GALLERY SHOWCASE */}
+      <section id="gallery" className="py-24 bg-[#0b0f19] border-t border-b border-slate-800/80 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-indigo-600/10 blur-[160px] rounded-full pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
+          <div className="text-center max-w-3xl mx-auto space-y-4">
+            <span className="text-xs uppercase tracking-widest text-indigo-400 font-extrabold flex items-center justify-center gap-1.5">
+              <Radio className="w-4 h-4 text-indigo-400" />
+              <span>Premium Hardware Collection</span>
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+              NFC Smart Business Cards Gallery
+            </h2>
+            <p className="text-slate-400 text-sm sm:text-base">
+              Explore our lineup of custom-engraved metal, sustainable wood, and sleek frosted acrylic cards.
+              Tap to any phone to share your TapLink profile in less than 0.1 seconds.
+            </p>
+          </div>
+
+          {/* Gallery Category Selector */}
+          <div className="flex flex-wrap items-center justify-center gap-2 p-2 rounded-2xl bg-[#131d33] border border-slate-800 max-w-4xl mx-auto shadow-2xl">
+            {NFC_CARDS_CATALOG.map((card, idx) => (
+              <button
+                key={card.id}
+                onClick={() => setSelectedGalleryCard(idx)}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+                  selectedGalleryCard === idx
+                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 scale-105"
+                    : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                }`}
+              >
+                <span>{card.name}</span>
+                {card.badge && (
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full border ${card.tagColor}`}>
+                    {card.badge}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          {/* Featured Active Card Spotlight */}
+          {(() => {
+            const currentCard = NFC_CARDS_CATALOG[selectedGalleryCard];
+            return (
+              <div className="grid lg:grid-cols-12 gap-8 items-center bg-[#131d33]/80 border border-slate-800 rounded-3xl p-8 lg:p-12 shadow-2xl backdrop-blur-md">
+                {/* 3D Animated Card Preview */}
+                <div className="lg:col-span-6 flex justify-center items-center py-6">
+                  <div className="w-full max-w-[420px] aspect-[1.586] rounded-3xl bg-gradient-to-tr from-slate-950 via-neutral-900 to-slate-900 border-2 border-slate-700/80 p-7 flex flex-col justify-between shadow-2xl relative overflow-hidden group transform hover:scale-[1.03] hover:-rotate-1 transition-all duration-300">
+                    {/* Metallic Glow Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+
+                    {/* Top of Card */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-8 h-8 rounded-xl overflow-hidden border border-indigo-500/40">
+                          <Image src="/logo.png" alt="TapLink" fill sizes="32px" className="object-cover" />
+                        </div>
+                        <span className="font-extrabold tracking-widest text-white text-base">TAPLINK</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-[11px] font-mono text-indigo-400">
+                        <Radio className="w-3.5 h-3.5 animate-pulse text-indigo-400" />
+                        <span>NFC READY</span>
+                      </div>
+                    </div>
+
+                    {/* Center NFC Sensor Design */}
+                    <div className="flex items-center justify-between">
+                      <div className="w-12 h-10 rounded-lg bg-gradient-to-tr from-amber-400 via-yellow-400 to-amber-600 shadow-md flex items-center justify-center border border-amber-300/80">
+                        <div className="w-8 h-6 border border-amber-800/50 rounded-sm" />
+                      </div>
+                      <div className="text-right">
+                        <div className="text-[10px] text-slate-400 uppercase font-mono tracking-widest">NXP CHIPSET</div>
+                        <div className="text-xs font-bold text-slate-200">{currentCard.chip}</div>
+                      </div>
+                    </div>
+
+                    {/* Bottom of Card */}
+                    <div className="flex items-end justify-between pt-4 border-t border-slate-800/80">
+                      <div>
+                        <div className="text-[10px] text-slate-400 uppercase tracking-widest">{currentCard.material}</div>
+                        <div className="text-sm font-bold text-white tracking-wider">{currentCard.name}</div>
+                      </div>
+                      <div className="font-mono text-xs text-indigo-400 font-bold tracking-tight">
+                        taplink.in
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card Details & Ordering */}
+                <div className="lg:col-span-6 space-y-6 text-left">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-bold tracking-wide" style={{ backgroundColor: "rgba(99, 102, 241, 0.1)", borderColor: "rgba(99, 102, 241, 0.3)" }}>
+                    <span className="text-indigo-400">{currentCard.badge}</span>
+                  </div>
+
+                  <h3 className="text-2xl sm:text-4xl font-extrabold text-white">
+                    {currentCard.name}
+                  </h3>
+
+                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    {currentCard.description}
+                  </p>
+
+                  <div className="space-y-3 pt-2">
+                    <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span><strong>Material:</strong> {currentCard.material}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span><strong>Finish:</strong> {currentCard.finish}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span><strong>Technology:</strong> {currentCard.chip}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-200">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span><strong>Durability:</strong> {currentCard.durability}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
+                    <button
+                      onClick={() => handleOpenOrder(currentCard.name)}
+                      className="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Order {currentCard.name}</span>
+                    </button>
+                    <span className="text-xs text-slate-400">Custom branding & laser engraving included</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Grid View of all Available Cards */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
+            {NFC_CARDS_CATALOG.map((card, idx) => (
+              <div
+                key={card.id}
+                onClick={() => setSelectedGalleryCard(idx)}
+                className={`cursor-pointer rounded-3xl p-6 border transition-all space-y-4 ${
+                  selectedGalleryCard === idx
+                    ? "bg-[#162342] border-indigo-500 shadow-xl shadow-indigo-500/20"
+                    : "bg-[#131d33]/60 border-slate-800 hover:border-slate-700"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`text-[10px] px-2.5 py-0.5 rounded-full border font-semibold ${card.tagColor}`}>
+                    {card.badge}
+                  </span>
+                  <Radio className={`w-4 h-4 ${selectedGalleryCard === idx ? "text-indigo-400" : "text-slate-500"}`} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-base">{card.name}</h4>
+                  <p className="text-xs text-slate-400 mt-1">{card.material}</p>
+                </div>
+                <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">{card.description}</p>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenOrder(card.name);
+                  }}
+                  className="w-full py-2 px-3 rounded-xl bg-slate-800/80 hover:bg-indigo-600 text-slate-200 hover:text-white text-xs font-semibold transition-colors flex items-center justify-center gap-1.5"
+                >
+                  <span>Select & Order</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CORE FEATURES SECTION */}
-      <section id="features" className="py-20 bg-[#0b0f19] border-t border-b border-slate-800/80 relative">
+      <section id="features" className="py-20 bg-[#080c16] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
             <h2 className="text-xs uppercase tracking-widest text-indigo-400 font-extrabold">Everything in One Place</h2>
@@ -281,7 +555,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-white">Zero-Fee UPI Payments</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Collect payments instantly with GPay, PhonePe, and Paytm directly into your merchant bank account.
+                Collect payments instantly with GPay, PhonePe, and Paytm directly into your merchant bank account with direct QR scanning.
               </p>
             </div>
 
@@ -314,7 +588,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-bold text-white">Real-Time Click Analytics</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Track how many people viewed your card, clicked WhatsApp, downloaded contact, or made payments.
+                Track how many people viewed your card, clicked WhatsApp, saved contact, or scanned your QR.
               </p>
             </div>
           </div>
@@ -322,7 +596,7 @@ export default function HomePage() {
       </section>
 
       {/* HOW IT WORKS SECTION */}
-      <section id="how-it-works" className="py-20 bg-[#080c16]">
+      <section id="how-it-works" className="py-20 bg-[#0b0f19] border-t border-slate-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
             <span className="text-xs uppercase tracking-widest text-indigo-400 font-extrabold">Simplicity First</span>
@@ -335,10 +609,9 @@ export default function HomePage() {
               <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-extrabold text-lg flex items-center justify-center mx-auto shadow-lg shadow-indigo-600/30">
                 1
               </div>
-              <h3 className="text-xl font-bold text-white">Claim Your Profile URL</h3>
+              <h3 className="text-xl font-bold text-white">Choose Your NFC Card</h3>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Create your custom username at <span className="text-indigo-400 font-mono">taplink.in/yourname</span> and
-                fill in your business buttons.
+                Select your favorite card material (Matte Black, Luxury Gold, Bamboo Wood) with custom engraving.
               </p>
             </div>
 
@@ -368,7 +641,7 @@ export default function HomePage() {
       </section>
 
       {/* LIVE DEMOS SHOWCASE */}
-      <section id="demos" className="py-20 bg-[#0b0f19] border-t border-slate-800/80">
+      <section id="demos" className="py-20 bg-[#080c16] border-t border-slate-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
             <span className="text-xs uppercase tracking-widest text-indigo-400 font-extrabold">Explore Live Profiles</span>
@@ -426,97 +699,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PHYSICAL NFC CARD SHOWCASE */}
-      <section id="nfc-card" className="py-20 bg-[#080c16] border-t border-slate-800/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl bg-gradient-to-r from-indigo-950/40 via-purple-950/40 to-slate-900 border border-indigo-500/20 p-8 lg:p-14">
-            <div className="grid lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-6">
-                <span className="text-xs uppercase tracking-widest text-indigo-400 font-extrabold">
-                  Hardware &bull; NFC Smart Cards
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-extrabold text-white leading-tight">
-                  Matte Black Luxury NFC Cards.
-                </h2>
-                <p className="text-slate-300 text-base leading-relaxed">
-                  Engineered with premium NTAG216 high-frequency microchips. Just tap against any iPhone or Android phone
-                  to instantly launch your TapLink profile without touching a screen.
-                </p>
-
-                <div className="grid sm:grid-cols-2 gap-3 pt-2">
-                  <div className="flex items-center gap-2 text-sm text-slate-200">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>No battery or charging needed</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-slate-200">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Waterproof & durable PVC / Metal</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-slate-200">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Reprogrammable anytime</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-slate-200">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Instant tap response (&lt;0.1s)</span>
-                  </div>
-                </div>
-
-                <div className="pt-4">
-                  <Link
-                    href="/admin/customers/new"
-                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all"
-                  >
-                    <span>Order Your NFC Card</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* NFC Card Visual Mockup */}
-              <div className="lg:col-span-5 flex justify-center">
-                <div className="w-full max-w-[360px] aspect-[1.586] rounded-2xl bg-gradient-to-tr from-slate-950 via-slate-900 to-slate-800 border border-slate-700 p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
-                  
-                  {/* Top Bar of Card */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Zap className="w-5 h-5 text-indigo-400 fill-current" />
-                      <span className="font-extrabold tracking-wider text-white text-sm">TAPLINK</span>
-                    </div>
-                    <div className="w-6 h-6 text-slate-400">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Center NFC Chip graphic */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-8 rounded-md bg-gradient-to-tr from-amber-300 via-yellow-400 to-amber-500 opacity-85 shadow-md flex items-center justify-center border border-amber-200">
-                      <div className="w-6 h-5 border border-amber-700/40 rounded-sm" />
-                    </div>
-                    <span className="text-xs text-slate-400 font-mono tracking-widest">NFC CONTACTLESS</span>
-                  </div>
-
-                  {/* Bottom info */}
-                  <div className="flex items-end justify-between">
-                    <div>
-                      <div className="text-xs text-slate-400 uppercase tracking-widest">DIGITAL PASS</div>
-                      <div className="text-sm font-bold text-white tracking-wider">TAPLINK.IN</div>
-                    </div>
-                    <div className="w-7 h-7 rounded-full bg-slate-800/90 border border-slate-700 flex items-center justify-center">
-                      <Smartphone className="w-4 h-4 text-indigo-400" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ SECTION */}
       <section id="faq" className="py-20 bg-[#0b0f19] border-t border-slate-800/80">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -559,25 +741,159 @@ export default function HomePage() {
       <footer className="mt-auto border-t border-slate-800/80 bg-[#060911] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center">
-              <Zap className="w-4 h-4 text-white fill-current" />
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden shadow-md shadow-indigo-600/30 border border-indigo-500/30 shrink-0">
+              <Image src="/logo.png" alt="TapLink Logo" fill sizes="36px" className="object-cover" />
             </div>
             <span className="font-black text-white text-lg tracking-tight">TapLink</span>
             <span className="text-xs text-slate-500">&copy; {new Date().getFullYear()} TapLink. All rights reserved.</span>
           </div>
 
           <div className="flex items-center gap-6 text-xs text-slate-400">
-            <Link href="/admin/login" className="hover:text-indigo-400 transition-colors">
-              Admin Portal
+            <Link href="/admin/login" className="hover:text-indigo-400 transition-colors flex items-center gap-1">
+              <Lock className="w-3 h-3 text-slate-400" />
+              <span>Admin Portal</span>
             </Link>
             <Link href="/rahul" className="hover:text-indigo-400 transition-colors">
               Demo Profile
             </Link>
             <span className="text-slate-600">&bull;</span>
-            <span className="text-slate-400">Production: https://taplink.in</span>
+            <span className="text-slate-400">Official: https://taplink.in</span>
           </div>
         </div>
       </footer>
+
+      {/* ORDER NFC CARD MODAL */}
+      {showOrderModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={() => setShowOrderModal(false)}
+        >
+          <div
+            className="bg-[#131d33] border border-slate-700/80 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-6 shadow-2xl relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowOrderModal(false)}
+              className="absolute top-5 right-5 p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Header */}
+            <div className="flex items-center gap-3">
+              <div className="relative w-12 h-12 rounded-2xl overflow-hidden shadow-md border border-indigo-500/40 shrink-0">
+                <Image src="/logo.png" alt="TapLink" fill sizes="48px" className="object-cover" />
+              </div>
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold text-white">Order TapLink NFC Card</h3>
+                <p className="text-xs text-slate-400">Custom engraved with your permanent digital profile.</p>
+              </div>
+            </div>
+
+            {orderSuccess ? (
+              <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+                  <Check className="w-6 h-6" />
+                </div>
+                <h4 className="text-base font-bold text-white">Order Inquiry Sent!</h4>
+                <p className="text-xs text-slate-300">
+                  WhatsApp will open with your order details. Our executive will confirm your custom design and delivery.
+                </p>
+                <button
+                  onClick={() => setShowOrderModal(false)}
+                  className="mt-2 px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold"
+                >
+                  Done
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSendWhatsAppOrder} className="space-y-4">
+                {/* Select Card Material */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-300">Select NFC Card Style</label>
+                  <select
+                    value={orderCardType}
+                    onChange={(e) => setOrderCardType(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500 font-semibold"
+                  >
+                    {NFC_CARDS_CATALOG.map((c) => (
+                      <option key={c.id} value={c.name} className="bg-slate-900 text-white">
+                        {c.name} ({c.material})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-300">
+                      Your Full Name <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={orderForm.name}
+                      onChange={(e) => setOrderForm({ ...orderForm, name: e.target.value })}
+                      placeholder="e.g. Rahul Sharma"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-slate-300">
+                      WhatsApp Number <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={orderForm.phone}
+                      onChange={(e) => setOrderForm({ ...orderForm, phone: e.target.value })}
+                      placeholder="+91 98765 43210"
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-300">Business / Company Name (Optional)</label>
+                  <input
+                    type="text"
+                    value={orderForm.business}
+                    onChange={(e) => setOrderForm({ ...orderForm, business: e.target.value })}
+                    placeholder="e.g. Verma Enterprises"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-300">Special Notes or Custom Text (Optional)</label>
+                  <input
+                    type="text"
+                    value={orderForm.notes}
+                    onChange={(e) => setOrderForm({ ...orderForm, notes: e.target.value })}
+                    placeholder="e.g. Include company logo on back side"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                  />
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm transition-all shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 active:scale-95"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Proceed & Order on WhatsApp</span>
+                  </button>
+                  <p className="text-[11px] text-center text-slate-400 mt-2">
+                    Instant response & bull; Custom design mockups shared on WhatsApp
+                  </p>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

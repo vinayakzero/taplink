@@ -386,14 +386,16 @@ export default function ProfileView({ customer }: ProfileViewProps) {
         <div className="pt-6 pb-4 text-center space-y-2">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-medium text-slate-400 hover:text-indigo-400 transition-colors"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-medium text-slate-400 hover:text-indigo-400 transition-colors"
           >
+            <div className="relative w-4 h-4 rounded-md overflow-hidden shrink-0">
+              <Image src="/logo.png" alt="TapLink" fill sizes="16px" className="object-cover" />
+            </div>
             <span>Powered by</span>
-            <span className="font-bold text-white tracking-tight">TapLink</span>
-            <span className="text-indigo-400">⚡</span>
+            <span className="font-bold text-white tracking-tight">TapLink.in</span>
           </Link>
           <p className="text-[11px] text-slate-500">
-            Create your own NFC + QR Profile at{" "}
+            Get your own NFC & QR Card at{" "}
             <Link href="/" className="text-indigo-400 underline hover:text-indigo-300">
               taplink.in
             </Link>

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -12,7 +13,6 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  Zap,
   Menu,
   X,
   ExternalLink,
@@ -54,9 +54,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     <div className="min-h-screen bg-[#080c16] text-slate-100 flex flex-col md:flex-row">
       {/* Mobile Top Header */}
       <div className="md:hidden flex items-center justify-between p-4 bg-[#0d1527] border-b border-slate-800 sticky top-0 z-30">
-        <Link href="/admin" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center">
-            <Zap className="w-4 h-4 text-white fill-current" />
+        <Link href="/admin" className="flex items-center gap-2.5">
+          <div className="relative w-8 h-8 rounded-xl overflow-hidden shadow-md shadow-indigo-600/30 border border-indigo-500/30 shrink-0">
+            <Image src="/logo.png" alt="TapLink Logo" fill sizes="32px" className="object-cover" />
           </div>
           <span className="font-extrabold text-white">TapLink Admin</span>
         </Link>
@@ -77,8 +77,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="p-6 space-y-6">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-600/30 group-hover:scale-105 transition-transform">
-              <Zap className="w-5 h-5 text-white fill-current" />
+            <div className="relative w-10 h-10 rounded-2xl overflow-hidden shadow-lg shadow-indigo-600/30 border border-indigo-500/40 shrink-0 group-hover:scale-105 transition-transform">
+              <Image src="/logo.png" alt="TapLink" fill sizes="40px" className="object-cover" />
             </div>
             <div>
               <div className="font-black text-white text-lg tracking-tight">TapLink</div>

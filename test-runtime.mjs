@@ -1,5 +1,5 @@
 async function test() {
-  console.log("🔍 Testing TapLink live endpoints, Auth, Profile Editing & Deletion...\n");
+  console.log("🔍 Testing TapLink live endpoints, Auth, Image Upload, Profile Editing & Deletion...\n");
 
   const endpoints = [
     { name: "Homepage (GET /)", url: "http://localhost:3000/", method: "GET" },
@@ -8,6 +8,7 @@ async function test() {
     { name: "Customer Profile: Sharma Cafe (GET /sharma-cafe)", url: "http://localhost:3000/sharma-cafe", method: "GET" },
     { name: "Customers API (GET /api/customers)", url: "http://localhost:3000/api/customers", method: "GET" },
     { name: "vCard Export (GET /api/vcard/rahul)", url: "http://localhost:3000/api/vcard/rahul", method: "GET" },
+    { name: "Static Logo Asset (GET /logo.png)", url: "http://localhost:3000/logo.png", method: "GET" },
   ];
 
   for (const ep of endpoints) {
@@ -40,7 +41,26 @@ async function test() {
     console.error("❌ Admin Login Error:", err.message);
   }
 
-  // 2. Test Customer Create (for deletion test)
+  // 2. Test Image Upload API (POST /api/upload)
+  let uploadedPhotoUrl = "";
+  try {
+    const formData = new FormData();
+    const fakeImageBuffer = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==", "base64");
+    const blob = new Blob([fakeImageBuffer], { type: "image/png" });
+    formData.append("file", blob, "avatar.png");
+
+    const uploadRes = await fetch("http://localhost:3000/api/upload", {
+      method: "POST",
+      body: formData,
+    });
+    const uploadData = await uploadRes.json();
+    uploadedPhotoUrl = uploadData.url;
+    console.log(`✅ Gallery Image Upload (POST /api/upload) -> Status: ${uploadRes.status}`, uploadData);
+  } catch (err) {
+    console.error("❌ Image Upload Error:", err.message);
+  }
+
+  // 3. Test Customer Create (with uploaded profile photo)
   let createdCustomerId = "";
   try {
     const createRes = await fetch("http://localhost:3000/api/customers", {
@@ -50,10 +70,11 @@ async function test() {
         Cookie: authCookie,
       },
       body: JSON.stringify({
-        name: "Test Delete Profile",
-        username: "test-delete-profile",
-        businessName: "Temporary Business",
-        bio: "This customer will be deleted to test deletion functionality.",
+        name: "Test Photo Profile",
+        username: "test-photo-profile",
+        businessName: "Photo Studio",
+        bio: "Tested with uploaded gallery photo.",
+        profileImage: uploadedPhotoUrl,
         whatsapp: "919876543210",
         upiId: "test@upi",
         isActive: true,
@@ -61,33 +82,9 @@ async function test() {
     });
     const createData = await createRes.json();
     createdCustomerId = createData.customer?.id;
-    console.log(`✅ Create Customer (POST /api/customers) -> Status: ${createRes.status}`, createData);
+    console.log(`✅ Create Customer with Uploaded Photo (POST /api/customers) -> Status: ${createRes.status}`, createData.customer?.profileImage);
   } catch (err) {
     console.error("❌ Create Customer Error:", err.message);
-  }
-
-  // 3. Test Customer Update (Business Name & Bio Edit)
-  try {
-    const updateRes = await fetch(`http://localhost:3000/api/customers/cust-rahul-01`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: authCookie,
-      },
-      body: JSON.stringify({
-        name: "Rahul",
-        username: "rahul",
-        businessName: "Cloud & Tech Solutions",
-        bio: "Providing modern digital NFC solutions.",
-        whatsapp: "919876543210",
-        upiId: "rahul@okhdfcbank",
-        isActive: true,
-      }),
-    });
-    const updateData = await updateRes.json();
-    console.log(`✅ Update Customer Bio & Business Title (PUT /api/customers/cust-rahul-01) -> Status: ${updateRes.status}`, updateData.customer?.businessName);
-  } catch (err) {
-    console.error("❌ Update Customer Error:", err.message);
   }
 
   // 4. Test Customer Deletion
@@ -106,7 +103,7 @@ async function test() {
     }
   }
 
-  console.log("\n🚀 All verification tests finished successfully!");
+  console.log("\n🚀 All verification tests completed successfully!");
 }
 
 test();

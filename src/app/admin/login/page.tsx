@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Zap, Lock, Mail, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { Lock, Mail, ArrowRight, AlertCircle, Sparkles } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -52,9 +53,9 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md space-y-6 relative z-10">
         {/* Header Logo */}
         <div className="text-center space-y-2">
-          <Link href="/" className="inline-flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-600/30">
-              <Zap className="w-6 h-6 text-white fill-current" />
+          <Link href="/" className="inline-flex items-center gap-3 group">
+            <div className="relative w-14 h-14 rounded-2xl overflow-hidden shadow-xl shadow-indigo-600/30 border border-indigo-500/40 group-hover:scale-105 transition-transform">
+              <Image src="/logo.png" alt="TapLink" fill sizes="56px" className="object-cover" />
             </div>
           </Link>
           <h1 className="text-2xl font-black text-white tracking-tight">TapLink Admin</h1>

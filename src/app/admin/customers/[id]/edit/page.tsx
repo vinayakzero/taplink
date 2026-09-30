@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,6 +14,9 @@ import {
   Star,
   CreditCard,
   Trash2,
+  Upload,
+  X,
+  ImageIcon,
 } from "lucide-react";
 
 export default function EditCustomerPage() {
@@ -24,8 +27,10 @@ export default function EditCustomerPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -90,6 +95,40 @@ export default function EditCustomerPage() {
       setFormData((prev) => ({ ...prev, username: clean }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please select a valid image file (PNG, JPG, JPEG, WEBP).");
+      return;
+    }
+
+    setUploadingImage(true);
+    setError(null);
+    try {
+      const data = new FormData();
+      data.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: data,
+      });
+
+      const resData = await res.json();
+      if (res.ok && resData.url) {
+        setFormData((prev) => ({ ...prev, profileImage: resData.url }));
+      } else {
+        throw new Error(resData.error || "Failed to upload image");
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to upload image.");
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -256,15 +295,64 @@ export default function EditCustomerPage() {
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-300">Profile Photo URL</label>
+            {/* Profile Photo: Gallery Upload */}
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-slate-300 flex items-center justify-between">
+                <span>Profile Photo (Upload from Gallery / Device)</span>
+                {formData.profileImage && (
+                  <button
+                    type="button"
+                    onClick={() => setFormData((prev) => ({ ...prev, profileImage: "" }))}
+                    className="text-[11px] text-red-400 hover:text-red-300 flex items-center gap-1"
+                  >
+                    <X className="w-3 h-3" />
+                    <span>Remove Photo</span>
+                  </button>
+                )}
+              </label>
+
               <input
-                type="url"
-                name="profileImage"
-                value={formData.profileImage}
-                onChange={handleChange}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                type="file"
+                ref={fileInputRef}
+                accept="image/png, image/jpeg, image/jpg, image/webp"
+                onChange={handleFileUpload}
+                className="hidden"
               />
+
+              <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl bg-slate-900/90 border border-slate-700/80">
+                {/* Photo Thumbnail */}
+                <div className="relative w-20 h-20 rounded-2xl overflow-hidden bg-slate-800 border-2 border-indigo-500/40 shrink-0 flex items-center justify-center">
+                  {formData.profileImage ? (
+                    <Image
+                      src={formData.profileImage}
+                      alt="Profile preview"
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <ImageIcon className="w-8 h-8 text-slate-500" />
+                  )}
+                </div>
+
+                {/* Upload Buttons & Options */}
+                <div className="space-y-2 flex-1 w-full text-left">
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploadingImage}
+                      className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-indigo-600/20 flex items-center gap-2 disabled:opacity-50"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>{uploadingImage ? "Uploading Photo..." : "Upload from Gallery / Files"}</span>
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-slate-400">
+                    Supports JPG, PNG, WEBP (Max 5MB). Photo updates automatically.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-1.5">
