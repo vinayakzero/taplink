@@ -26,37 +26,37 @@ const HERO_SLIDER_ITEMS = [
   {
     id: "mainpage",
     title: "TapLink Social Smart NFC Card",
-    image: "/cards/mainpage.jpg",
+    image: "/cards/mainpage.png",
   },
   {
     id: "card-1",
     title: "Doctor & Medical Clinic Google Review NFC Card",
-    image: "/cards/card-1.jpg",
+    image: "/cards/card-1.png",
   },
   {
     id: "card-2",
     title: "Google 5-Star Business Review Tap & Scan Card",
-    image: "/cards/card-2.jpg",
+    image: "/cards/card-2.png",
   },
   {
     id: "card-3",
     title: "Instagram Follower Growth & Social Booster Card",
-    image: "/cards/card-3.jpg",
+    image: "/cards/card-3.png",
   },
   {
     id: "card-4",
     title: "Facebook Page & Social Community Card",
-    image: "/cards/card-4.jpg",
+    image: "/cards/card-4.png",
   },
   {
     id: "card-5",
     title: "Restaurant & Cafe Digital Menu NFC Standee",
-    image: "/cards/card-5.jpg",
+    image: "/cards/card-5.png",
   },
   {
     id: "card-6",
     title: "LinkedIn Corporate & Executive Networking Card",
-    image: "/cards/card-6.jpg",
+    image: "/cards/card-6.png",
   },
 ];
 
@@ -65,7 +65,7 @@ const NFC_CARDS_CATALOG = [
   {
     id: "doctor-clinic-review",
     name: "Doctor & Medical Clinic Google Review NFC Card",
-    image: "/cards/card-1.jpg",
+    image: "/cards/card-1.png",
     badge: "Medical & Clinics",
     category: "Healthcare & Wellness",
     material: "Medical-Grade Acrylic & Hard PVC",
@@ -81,7 +81,7 @@ const NFC_CARDS_CATALOG = [
   {
     id: "google-5star-review",
     name: "Google 5-Star Business Review Tap & Scan NFC Card",
-    image: "/cards/card-2.jpg",
+    image: "/cards/card-2.png",
     badge: "Best Seller #1",
     category: "Retail & Local Business",
     material: "Reinforced Composite Polymer",
@@ -97,7 +97,7 @@ const NFC_CARDS_CATALOG = [
   {
     id: "instagram-booster",
     name: "Instagram Follower Growth & Social Booster NFC Card",
-    image: "/cards/card-3.jpg",
+    image: "/cards/card-3.png",
     badge: "Creator & Influencer",
     category: "Social Media & Creators",
     material: "Hardened Ultra-Gloss Polymer",
@@ -113,7 +113,7 @@ const NFC_CARDS_CATALOG = [
   {
     id: "facebook-community",
     name: "Facebook Page & Social Community NFC Card",
-    image: "/cards/card-4.jpg",
+    image: "/cards/card-4.png",
     badge: "Social & Community",
     category: "Local Community & Brand",
     material: "Durable Cobalt Matte PVC",
@@ -129,7 +129,7 @@ const NFC_CARDS_CATALOG = [
   {
     id: "restaurant-cafe-menu",
     name: "Restaurant & Cafe Digital Menu NFC Card / Standee",
-    image: "/cards/card-5.jpg",
+    image: "/cards/card-5.png",
     badge: "Hospitality Special",
     category: "Food & Dining",
     material: "Spill-Proof Heavy Acrylic PVC",
@@ -145,7 +145,7 @@ const NFC_CARDS_CATALOG = [
   {
     id: "linkedin-corporate",
     name: "LinkedIn Professional & Executive Networking Card",
-    image: "/cards/card-6.jpg",
+    image: "/cards/card-6.png",
     badge: "Corporate & Executive",
     category: "Executive & Sales",
     material: "Matte Black Ingot & Carbon Polymer",
