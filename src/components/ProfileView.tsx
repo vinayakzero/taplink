@@ -8,6 +8,8 @@ import {
   Instagram,
   Facebook,
   Youtube,
+  Phone,
+  MapPin,
   Star,
   Globe,
   CreditCard,
@@ -234,7 +236,27 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             </a>
           )}
 
-          {/* 2. Google Review Button */}
+          {/* 2. Direct Call Button */}
+          {customer.phone && (
+            <a
+              href={`tel:${customer.phone.replace(/[^0-9+]/g, "")}`}
+              onClick={() => trackClick("call_click")}
+              className="group flex items-center justify-between w-full p-4 rounded-2xl bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-500/30 text-white transition-all transform hover:-translate-y-0.5 active:scale-[0.99] shadow-md shadow-indigo-950/20"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-md shadow-indigo-600/30 group-hover:scale-105 transition-transform">
+                  <Phone className="w-5 h-5" />
+                </div>
+                <div className="text-left">
+                  <div className="font-semibold text-slate-100">Call Directly</div>
+                  <p className="text-xs text-indigo-300/80 font-mono">{customer.phone}</p>
+                </div>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-indigo-400 group-hover:translate-x-0.5 transition-all" />
+            </a>
+          )}
+
+          {/* 3. Google Review Button */}
           {reviewUrl && (
             <a
               href={reviewUrl}
@@ -259,7 +281,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             </a>
           )}
 
-          {/* 3. UPI / Payment Button with QR Scanner & Copy */}
+          {/* 4. UPI / Payment Button with QR Scanner & Copy */}
           {customer.upiId && (
             <div className="rounded-2xl bg-gradient-to-r from-purple-500/15 to-indigo-500/15 border border-purple-500/30 p-4 shadow-lg shadow-purple-950/20 space-y-3">
               <div className="flex items-center justify-between">
@@ -307,7 +329,7 @@ export default function ProfileView({ customer }: ProfileViewProps) {
             </div>
           )}
 
-          {/* 4. Website Button */}
+          {/* 5. Website Button */}
           {webUrl && (
             <a
               href={webUrl}
@@ -326,6 +348,28 @@ export default function ProfileView({ customer }: ProfileViewProps) {
                 </div>
               </div>
               <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-cyan-400 group-hover:translate-x-0.5 transition-all" />
+            </a>
+          )}
+
+          {/* 6. Google Maps Location Button */}
+          {customer.locationUrl && (
+            <a
+              href={normalizeUrl(customer.locationUrl) || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackClick("location_click")}
+              className="group flex items-center justify-between w-full p-4 rounded-2xl bg-teal-600/10 hover:bg-teal-600/20 border border-teal-500/30 text-white transition-all transform hover:-translate-y-0.5 active:scale-[0.99] shadow-md shadow-teal-950/20"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-xl bg-teal-600 text-white flex items-center justify-center shadow-md shadow-teal-600/30 group-hover:scale-105 transition-transform">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div className="text-left">
+                  <div className="font-semibold text-slate-100">Store / Office Location</div>
+                  <p className="text-xs text-teal-300/80">Get directions on Google Maps</p>
+                </div>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-all" />
             </a>
           )}
 

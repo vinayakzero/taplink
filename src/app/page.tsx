@@ -26,7 +26,7 @@ const HERO_SLIDER_ITEMS = [
   {
     id: "mainpage",
     title: "TapLink Social Smart NFC Card",
-    image: "/cards/mainpage.jpg",
+    image: "/cards/mainpage.png",
   },
   {
     id: "card-1",
@@ -362,10 +362,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Card Slider (Pure Clean Image Slider with NO frames, NO borders, NO text boxes, 100% mobile-friendly) */}
+            {/* Right Card Slider (Pure Clean 9:16 Image Slider with NO frames, NO borders, NO white edges, 100% mobile-friendly) */}
             <div className="lg:col-span-5 flex flex-col items-center justify-center w-full px-2 sm:px-0">
               <div
-                className="relative w-full max-w-[480px] mx-auto select-none group"
+                className="relative w-full max-w-[340px] sm:max-w-[400px] mx-auto select-none group"
                 onMouseEnter={() => setIsAutoPlayPaused(true)}
                 onMouseLeave={() => setIsAutoPlayPaused(false)}
                 onTouchStart={handleTouchStart}
@@ -375,8 +375,8 @@ export default function HomePage() {
                 {/* Soft ambient backlight glow */}
                 <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/15 via-indigo-600/20 to-purple-600/15 rounded-3xl blur-2xl opacity-70 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-                {/* Slider Image Canvas */}
-                <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] flex items-center justify-center overflow-hidden">
+                {/* Slider Image Canvas (9:16 portrait ratio) */}
+                <div className="relative w-full aspect-[9/16] flex items-center justify-center overflow-hidden">
                   {HERO_SLIDER_ITEMS.map((slide, idx) => {
                     const isActive = idx === currentHeroSlide;
                     return (
