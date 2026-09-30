@@ -49,17 +49,23 @@ const CUSTOMERS_FILE = path.join(DATA_DIR, "customers.json");
 const CARDS_FILE = path.join(DATA_DIR, "nfc-cards.json");
 const EVENTS_FILE = path.join(DATA_DIR, "analytics.json");
 
-function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
+function ensureDataDir(dir = DATA_DIR) {
+  try {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  } catch {
+    // Read-only filesystem fallback
   }
 }
 
 function loadJson<T>(filePath: string, fallback: T): T {
   try {
-    ensureDataDir();
-    if (fs.existsSync(filePath)) {
-      const content = fs.readFileSync(filePath, "utf-8").replace(/^\uFEFF/, "").trim();
+    const tmpPath = path.join("/tmp", path.basename(filePath));
+    const targetPath = fs.existsSync(tmpPath) ? tmpPath : filePath;
+
+    if (fs.existsSync(targetPath)) {
+      const content = fs.readFileSync(targetPath, "utf-8").replace(/^\uFEFF/, "").trim();
       if (!content) return fallback;
       return JSON.parse(content);
     }
@@ -73,8 +79,14 @@ function saveJson<T>(filePath: string, data: T) {
   try {
     ensureDataDir();
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
-  } catch (err) {
-    console.error(`Error saving ${filePath}:`, err);
+  } catch {
+    // If process.cwd() is read-only (e.g., on Vercel Serverless Functions), write to /tmp
+    try {
+      const tmpPath = path.join("/tmp", path.basename(filePath));
+      fs.writeFileSync(tmpPath, JSON.stringify(data, null, 2), "utf-8");
+    } catch (tmpErr) {
+      console.error(`Error saving to tmp for ${filePath}:`, tmpErr);
+    }
   }
 }
 
