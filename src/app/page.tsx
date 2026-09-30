@@ -308,20 +308,20 @@ export default function HomePage() {
         <div className="absolute top-1/3 right-1/4 w-[400px] h-[300px] bg-pink-600/15 blur-[120px] rounded-full pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Content */}
-            <div className="lg:col-span-7 space-y-6 sm:space-y-8 text-center lg:text-left">
+            <div className="lg:col-span-6 space-y-6 sm:space-y-8 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-500/30 text-indigo-300 text-xs font-semibold tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span>Smart NFC & QR Digital Business Profile</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.12]">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight leading-[1.12]">
                 One Tap. <br />
                 <span className="gradient-text">Everything Connected.</span>
               </h1>
 
-              <p className="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+              <p className="text-base sm:text-lg lg:text-xl text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
                 TapLink lets businesses connect customers to WhatsApp, social media, Google Reviews, website,
                 and instant UPI payments through one seamless NFC & QR profile.
               </p>
@@ -362,10 +362,10 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right Card Slider (Large, prominent, borderless image slider) */}
-            <div className="lg:col-span-5 flex flex-col items-center justify-center w-full px-1 sm:px-0">
+            {/* Right Card Slider (Massive, Prominent & High-Impact Showcase) */}
+            <div className="lg:col-span-6 flex flex-col items-center justify-center w-full px-1 sm:px-0">
               <div
-                className="relative w-full max-w-[500px] sm:max-w-[560px] lg:max-w-[600px] mx-auto select-none group"
+                className="relative w-full max-w-[580px] sm:max-w-[640px] lg:max-w-[720px] xl:max-w-[760px] mx-auto select-none group"
                 onMouseEnter={() => setIsAutoPlayPaused(true)}
                 onMouseLeave={() => setIsAutoPlayPaused(false)}
                 onTouchStart={handleTouchStart}
@@ -373,10 +373,10 @@ export default function HomePage() {
                 onTouchEnd={handleTouchEnd}
               >
                 {/* Soft ambient backlight glow */}
-                <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/15 via-indigo-600/20 to-purple-600/15 rounded-3xl blur-2xl opacity-70 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                <div className="absolute -inset-6 bg-gradient-to-r from-amber-500/20 via-indigo-600/30 to-purple-600/20 rounded-3xl blur-3xl opacity-80 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-                {/* Slider Image Canvas */}
-                <div className="relative w-full aspect-[4/3] sm:aspect-[16/11] flex items-center justify-center overflow-hidden rounded-2xl">
+                {/* Slider Image Canvas (Expanded aspect ratio with scaled card image for maximum prominence) */}
+                <div className="relative w-full aspect-[4/3] sm:aspect-[1.25/1] flex items-center justify-center overflow-hidden rounded-3xl bg-[#0d1424]/40 border border-slate-800/60 backdrop-blur-sm">
                   {HERO_SLIDER_ITEMS.map((slide, idx) => {
                     const isActive = idx === currentHeroSlide;
                     return (
@@ -388,14 +388,14 @@ export default function HomePage() {
                             : "opacity-0 scale-95 pointer-events-none z-0"
                         }`}
                       >
-                        <div className="relative w-full h-full p-1 sm:p-2 flex items-center justify-center">
+                        <div className="relative w-full h-full p-1 sm:p-2 flex items-center justify-center overflow-hidden">
                           <Image
                             src={slide.image}
                             alt={slide.title}
                             fill
                             priority={idx === 0}
-                            sizes="(max-width: 640px) 95vw, (max-width: 1024px) 520px, 600px"
-                            className="object-contain drop-shadow-2xl rounded-2xl transition-transform duration-500 hover:scale-[1.02]"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 640px, 760px"
+                            className="object-contain scale-115 sm:scale-120 md:scale-125 drop-shadow-2xl transition-transform duration-500 hover:scale-[1.30]"
                           />
                         </div>
                       </div>
@@ -406,7 +406,7 @@ export default function HomePage() {
                   <button
                     onClick={handlePrevSlide}
                     aria-label="Previous card image"
-                    className="absolute left-2 sm:left-3 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center backdrop-blur-md border border-slate-700/60 shadow-lg transition-all hover:scale-110 active:scale-95 opacity-80 group-hover:opacity-100"
+                    className="absolute left-2 sm:left-3 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900/85 hover:bg-indigo-600 text-white flex items-center justify-center backdrop-blur-md border border-slate-700/80 shadow-2xl transition-all hover:scale-110 active:scale-95 opacity-85 group-hover:opacity-100"
                   >
                     <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
@@ -415,26 +415,31 @@ export default function HomePage() {
                   <button
                     onClick={handleNextSlide}
                     aria-label="Next card image"
-                    className="absolute right-2 sm:right-3 z-20 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white flex items-center justify-center backdrop-blur-md border border-slate-700/60 shadow-lg transition-all hover:scale-110 active:scale-95 opacity-80 group-hover:opacity-100"
+                    className="absolute right-2 sm:right-3 z-20 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900/85 hover:bg-indigo-600 text-white flex items-center justify-center backdrop-blur-md border border-slate-700/80 shadow-2xl transition-all hover:scale-110 active:scale-95 opacity-85 group-hover:opacity-100"
                   >
                     <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
                 </div>
 
-                {/* Slider Pagination Indicators */}
-                <div className="flex items-center justify-center gap-1.5 mt-3 sm:mt-4 z-20">
-                  {HERO_SLIDER_ITEMS.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentHeroSlide(idx)}
-                      aria-label={`Slide ${idx + 1}`}
-                      className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
-                        idx === currentHeroSlide
-                          ? "w-6 sm:w-7 bg-indigo-500 shadow-md shadow-indigo-500/50"
-                          : "w-1.5 sm:w-2 bg-slate-700 hover:bg-slate-500"
-                      }`}
-                    />
-                  ))}
+                {/* Slider Pagination Indicators & Title Tag */}
+                <div className="flex flex-col items-center justify-center gap-2 mt-3 sm:mt-4 z-20">
+                  <div className="flex items-center justify-center gap-1.5">
+                    {HERO_SLIDER_ITEMS.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setCurrentHeroSlide(idx)}
+                        aria-label={`Slide ${idx + 1}`}
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          idx === currentHeroSlide
+                            ? "w-7 sm:w-9 bg-indigo-500 shadow-md shadow-indigo-500/50"
+                            : "w-2 bg-slate-700 hover:bg-slate-500"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-[11px] sm:text-xs text-slate-400 font-medium tracking-wide">
+                    {HERO_SLIDER_ITEMS[currentHeroSlide].title}
+                  </span>
                 </div>
               </div>
             </div>
@@ -490,18 +495,18 @@ export default function HomePage() {
               <div className="grid lg:grid-cols-12 gap-8 items-center bg-[#131d33]/80 border border-slate-800 rounded-3xl p-5 sm:p-8 lg:p-12 shadow-2xl backdrop-blur-md">
                 {/* Real Card Graphic Showcase */}
                 <div className="lg:col-span-6 flex justify-center items-center">
-                  <div className="w-full max-w-[460px] rounded-3xl bg-gradient-to-tr from-slate-950 via-neutral-900 to-slate-900 border border-slate-700/70 p-3 sm:p-5 shadow-2xl relative overflow-hidden group transform hover:scale-[1.02] transition-all duration-300">
+                  <div className="w-full max-w-[520px] rounded-3xl bg-gradient-to-tr from-slate-950 via-neutral-900 to-slate-900 border border-slate-700/70 p-3 sm:p-5 shadow-2xl relative overflow-hidden group transform hover:scale-[1.02] transition-all duration-300">
                     {/* Metallic Glow Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
 
                     {/* Card Image Display */}
-                    <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black/40 flex items-center justify-center">
+                    <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black/40 flex items-center justify-center p-1 sm:p-2">
                       <Image
                         src={currentCard.image}
                         alt={currentCard.name}
                         fill
-                        sizes="(max-width: 768px) 100vw, 460px"
-                        className="object-contain"
+                        sizes="(max-width: 768px) 100vw, 520px"
+                        className="object-contain scale-115 sm:scale-120 drop-shadow-2xl transition-transform duration-500 hover:scale-[1.25]"
                         priority
                       />
                     </div>
@@ -605,13 +610,13 @@ export default function HomePage() {
               >
                 <div className="space-y-3 sm:space-y-4">
                   {/* Card Thumbnail */}
-                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black/40 border border-slate-800/80">
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-black/40 border border-slate-800/80 p-1">
                     <Image
                       src={card.image}
                       alt={card.name}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
-                      className="object-contain"
+                      className="object-contain scale-110 hover:scale-115 transition-transform duration-300"
                     />
                   </div>
 
