@@ -125,7 +125,7 @@ export default function NfcCardsPage() {
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition-all flex items-center gap-1.5 self-start sm:self-auto"
+          className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition-all flex items-center gap-1.5 self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Link New NFC Card</span>
@@ -133,16 +133,16 @@ export default function NfcCardsPage() {
       </div>
 
       {/* NFC Status Banner */}
-      <div className="p-6 rounded-3xl bg-gradient-to-r from-indigo-950/40 to-[#131d33] border border-indigo-500/20 grid md:grid-cols-12 gap-6 items-center">
+      <div className="p-6 rounded-3xl bg-gradient-to-r from-blue-950/40 to-[#0d1424] border border-blue-500/20 grid md:grid-cols-12 gap-6 items-center">
         <div className="md:col-span-8 space-y-2">
-          <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs uppercase tracking-wider">
+          <div className="flex items-center gap-2 text-blue-400 font-bold text-xs uppercase tracking-wider">
             <Radio className="w-4 h-4" />
             <span>NFC Hardware Standard</span>
           </div>
           <h3 className="text-lg font-bold text-white">How NFC Encoding Works</h3>
           <p className="text-xs text-slate-300 leading-relaxed">
             Every TapLink NFC card contains a high-speed NDEF URL record pointing to{" "}
-            <span className="text-indigo-400 font-mono">https://taplink.in/[username]</span>. When tapped against any
+            <span className="text-blue-400 font-mono">https://taplink.in/[username]</span>. When tapped against any
             iPhone (XR and newer) or Android device, the profile opens instantly with 0 apps required.
           </p>
         </div>
@@ -155,14 +155,14 @@ export default function NfcCardsPage() {
       </div>
 
       {nfcMessage && (
-        <div className="p-4 rounded-2xl bg-indigo-950/80 border border-indigo-500 text-indigo-200 text-xs font-semibold flex items-center gap-3">
-          <Sparkles className="w-5 h-5 shrink-0 text-indigo-400" />
+        <div className="p-4 rounded-2xl bg-blue-950/80 border border-blue-500 text-blue-200 text-xs font-semibold flex items-center gap-3">
+          <Sparkles className="w-5 h-5 shrink-0 text-blue-400" />
           <span>{nfcMessage}</span>
         </div>
       )}
 
       {/* Cards Table */}
-      <div className="rounded-3xl bg-[#131d33] border border-slate-800 overflow-hidden shadow-xl">
+      <div className="rounded-3xl bg-[#0d1424] border border-slate-800 overflow-hidden shadow-xl">
         <div className="p-6 border-b border-slate-800 flex items-center justify-between">
           <h2 className="text-sm font-bold text-white uppercase tracking-wider">Registered NFC Cards</h2>
           <span className="text-xs text-slate-400">{cards.length} Total</span>
@@ -194,7 +194,7 @@ export default function NfcCardsPage() {
                   return (
                     <tr key={card.id} className="hover:bg-slate-800/30 transition-colors">
                       <td className="py-4 px-6 font-mono text-slate-200 font-bold flex items-center gap-2">
-                        <Radio className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                        <Radio className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                         <span>{card.cardUid}</span>
                       </td>
                       <td className="py-4 px-4 font-semibold text-white">
@@ -207,7 +207,7 @@ export default function NfcCardsPage() {
                           <span className="text-slate-500">Unassigned</span>
                         )}
                       </td>
-                      <td className="py-4 px-4 font-mono text-indigo-400">
+                      <td className="py-4 px-4 font-mono text-blue-400">
                         {customer ? (
                           <a
                             href={`/${customer.username}`}
@@ -231,7 +231,7 @@ export default function NfcCardsPage() {
                         {customer && (
                           <button
                             onClick={() => handleWriteNfc(customer.username)}
-                            className="px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 hover:text-white transition-colors text-xs font-semibold flex items-center gap-1.5 ml-auto"
+                            className="px-3 py-1.5 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 hover:text-white transition-colors text-xs font-semibold flex items-center gap-1.5 ml-auto"
                             title="Write this URL to physical tag"
                           >
                             <Zap className="w-3.5 h-3.5" />
@@ -255,7 +255,7 @@ export default function NfcCardsPage() {
           onClick={() => setShowAddModal(false)}
         >
           <div
-            className="bg-[#131d33] border border-slate-700 rounded-3xl p-6 max-w-md w-full space-y-5 shadow-2xl"
+            className="bg-[#0d1424] border border-slate-700 rounded-3xl p-6 max-w-md w-full space-y-5 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg font-bold text-white">Link New NFC Card</h3>
@@ -276,7 +276,7 @@ export default function NfcCardsPage() {
                 <select
                   value={selectedCustomerId}
                   onChange={(e) => setSelectedCustomerId(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
                 >
                   {customers.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -294,7 +294,7 @@ export default function NfcCardsPage() {
                   value={cardUid}
                   onChange={(e) => setCardUid(e.target.value)}
                   placeholder="e.g. 04:A2:8B:1A:6F:5E:80"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -309,7 +309,7 @@ export default function NfcCardsPage() {
                 <button
                   type="submit"
                   disabled={adding}
-                  className="flex-1 py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold disabled:opacity-50"
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold disabled:opacity-50"
                 >
                   {adding ? "Linking..." : "Link NFC Card"}
                 </button>

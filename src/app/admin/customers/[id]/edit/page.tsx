@@ -319,8 +319,8 @@ export default function EditCustomerPage() {
         {/* Left: Input Form */}
         <div className="lg:col-span-7 space-y-6">
           {/* Section 1: Basic Profile Info */}
-          <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider text-indigo-400 flex items-center gap-2">
+          <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-4">
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider text-blue-400 flex items-center gap-2">
               <span>1. Basic Profile Details</span>
             </h2>
 
@@ -333,7 +333,7 @@ export default function EditCustomerPage() {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -344,7 +344,7 @@ export default function EditCustomerPage() {
                   name="businessName"
                   value={formData.businessName}
                   onChange={handleChange}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
@@ -361,7 +361,7 @@ export default function EditCustomerPage() {
                   name="username"
                   value={formData.username}
                   onChange={handleChange}
-                  className="w-full px-3.5 py-2.5 rounded-r-xl bg-slate-900 border border-slate-700 text-indigo-400 font-mono text-xs focus:outline-none focus:border-indigo-500"
+                  className="w-full px-3.5 py-2.5 rounded-r-xl bg-slate-900 border border-slate-700 text-blue-400 font-mono text-xs focus:outline-none focus:border-blue-500"
                 />
               </div>
             </div>
@@ -392,7 +392,7 @@ export default function EditCustomerPage() {
 
               <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl bg-slate-900/90 border border-slate-700/80">
                 {/* Photo Thumbnail */}
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-slate-800 border-2 border-indigo-500/40 shrink-0 flex items-center justify-center">
+                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-slate-800 border-2 border-blue-500/40 shrink-0 flex items-center justify-center">
                   {formData.profileImage ? (
                     <Image
                       src={formData.profileImage}
@@ -412,7 +412,7 @@ export default function EditCustomerPage() {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploadingImage}
-                    className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-indigo-600/20 flex items-center gap-2 disabled:opacity-50"
+                    className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md shadow-blue-600/20 flex items-center gap-2 disabled:opacity-50"
                   >
                     <Upload className="w-3.5 h-3.5" />
                     <span>{uploadingImage ? "Uploading Photo..." : "Upload from Gallery"}</span>
@@ -431,13 +431,13 @@ export default function EditCustomerPage() {
                 rows={2}
                 value={formData.bio}
                 onChange={handleChange}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
               />
             </div>
           </div>
 
           {/* Section 2: Choose Which Profile Buttons to Enable (Tick / Untick) */}
-          <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-5">
+          <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-800">
               <div>
                 <h2 className="text-sm font-bold text-white uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
@@ -514,10 +514,10 @@ export default function EditCustomerPage() {
             </div>
 
             {/* Feature 2: Phone Call */}
-            <div className={`p-4 rounded-2xl border transition-all ${enabledFeatures.phone ? "bg-indigo-950/20 border-indigo-500/40" : "bg-slate-900/40 border-slate-800 opacity-70"}`}>
+            <div className={`p-4 rounded-2xl border transition-all ${enabledFeatures.phone ? "bg-blue-950/20 border-blue-500/40" : "bg-slate-900/40 border-slate-800 opacity-70"}`}>
               <div className="flex items-center justify-between cursor-pointer" onClick={() => toggleFeature("phone")}>
                 <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-white ${enabledFeatures.phone ? "bg-indigo-600" : "bg-slate-700"}`}>
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-white ${enabledFeatures.phone ? "bg-blue-600" : "bg-slate-700"}`}>
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
@@ -525,13 +525,13 @@ export default function EditCustomerPage() {
                     <p className="text-[11px] text-slate-400">Phone dialer & vCard download</p>
                   </div>
                 </div>
-                <div className="text-indigo-400">
-                  {enabledFeatures.phone ? <CheckSquare className="w-5 h-5 text-indigo-400" /> : <Square className="w-5 h-5 text-slate-500" />}
+                <div className="text-blue-400">
+                  {enabledFeatures.phone ? <CheckSquare className="w-5 h-5 text-blue-400" /> : <Square className="w-5 h-5 text-slate-500" />}
                 </div>
               </div>
 
               {enabledFeatures.phone && (
-                <div className="mt-3 pt-3 border-t border-indigo-500/20 space-y-1">
+                <div className="mt-3 pt-3 border-t border-blue-500/20 space-y-1">
                   <label className="text-[11px] font-semibold text-slate-300">Phone / Mobile Number</label>
                   <input
                     type="text"
@@ -539,7 +539,7 @@ export default function EditCustomerPage() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+91 98765 43210"
-                    className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
                   />
                 </div>
               )}
@@ -775,7 +775,7 @@ export default function EditCustomerPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.98] flex items-center gap-2 disabled:opacity-50"
+                className="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm shadow-lg shadow-blue-600/30 transition-all active:scale-[0.98] flex items-center gap-2 disabled:opacity-50"
               >
                 <Save className="w-4 h-4" />
                 <span>{saving ? "Saving Changes..." : "Save Changes"}</span>
@@ -810,17 +810,17 @@ export default function EditCustomerPage() {
         {/* Right: Real-time Live Preview */}
         <div className="lg:col-span-5 space-y-4">
           <div className="sticky top-6">
-            <div className="p-4 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4 shadow-xl">
+            <div className="p-4 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-4 shadow-xl">
               <div className="flex items-center justify-between pb-2 border-b border-slate-800">
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Smartphone className="w-3.5 h-3.5 text-indigo-400" />
+                  <Smartphone className="w-3.5 h-3.5 text-blue-400" />
                   <span>Real-Time Profile Preview</span>
                 </span>
-                <span className="text-[11px] font-mono text-indigo-400">/{formData.username}</span>
+                <span className="text-[11px] font-mono text-blue-400">/{formData.username}</span>
               </div>
 
-              <div className="rounded-2xl bg-[#0b0f19] border border-slate-800/80 p-5 text-center space-y-4">
-                <div className="w-16 h-16 mx-auto rounded-full p-0.5 bg-gradient-to-tr from-indigo-500 to-pink-500">
+              <div className="rounded-2xl bg-[#070a13] border border-slate-800/80 p-5 text-center space-y-4">
+                <div className="w-16 h-16 mx-auto rounded-full p-0.5 bg-gradient-to-tr from-blue-500 to-indigo-500">
                   <div className="relative w-full h-full rounded-full overflow-hidden bg-slate-900">
                     {formData.profileImage ? (
                       <Image
@@ -831,7 +831,7 @@ export default function EditCustomerPage() {
                         className="object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-indigo-600 text-white font-bold">
+                      <div className="w-full h-full flex items-center justify-center bg-blue-600 text-white font-bold">
                         {formData.name ? formData.name.charAt(0) : "?"}
                       </div>
                     )}
@@ -840,7 +840,7 @@ export default function EditCustomerPage() {
 
                 <div>
                   <h3 className="font-bold text-white text-base">{formData.name || "Customer Name"}</h3>
-                  {formData.businessName && <p className="text-xs text-indigo-400 font-semibold">{formData.businessName}</p>}
+                  {formData.businessName && <p className="text-xs text-blue-400 font-semibold">{formData.businessName}</p>}
                   {formData.bio && <p className="text-xs text-slate-400 mt-2 line-clamp-3">{formData.bio}</p>}
                 </div>
 
@@ -854,8 +854,8 @@ export default function EditCustomerPage() {
                   )}
 
                   {enabledFeatures.phone && (
-                    <div className="p-2.5 rounded-xl bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 font-semibold flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-indigo-400" />
+                    <div className="p-2.5 rounded-xl bg-blue-500/15 border border-blue-500/30 text-blue-300 font-semibold flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-blue-400" />
                       <span>Call & Save Contact</span>
                     </div>
                   )}

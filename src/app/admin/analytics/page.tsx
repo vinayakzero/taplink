@@ -121,7 +121,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Customer Filter Dropdown */}
-        <div className="flex items-center gap-2 bg-[#131d33] border border-slate-800 p-1.5 rounded-2xl">
+        <div className="flex items-center gap-2 bg-[#0d1424] border border-slate-800 p-1.5 rounded-2xl">
           <Filter className="w-4 h-4 text-slate-400 ml-2" />
           <select
             value={selectedCustomerId}
@@ -140,7 +140,7 @@ export default function AnalyticsPage() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-2">
+        <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Total Profile Views</span>
             <Eye className="w-5 h-5 text-blue-400" />
@@ -149,16 +149,16 @@ export default function AnalyticsPage() {
           <p className="text-xs text-slate-500">Scanned via NFC / QR / Direct URL</p>
         </div>
 
-        <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-2">
+        <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Total Action Clicks</span>
-            <MousePointerClick className="w-5 h-5 text-purple-400" />
+            <MousePointerClick className="w-5 h-5 text-blue-400" />
           </div>
           <div className="text-3xl font-black text-white">{clicks}</div>
           <p className="text-xs text-slate-500">WhatsApp, Calls, Reviews, UPI, Links</p>
         </div>
 
-        <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-2">
+        <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-2">
           <div className="flex items-center justify-between text-slate-400">
             <span className="text-xs font-bold uppercase tracking-wider">Conversion Rate</span>
             <TrendingUp className="w-5 h-5 text-emerald-400" />
@@ -171,7 +171,7 @@ export default function AnalyticsPage() {
       {/* Breakdown and Live Stream Grid */}
       <div className="grid lg:grid-cols-12 gap-8">
         {/* Left: Event Type Distribution */}
-        <div className="lg:col-span-6 rounded-3xl bg-[#131d33] border border-slate-800 p-6 space-y-6">
+        <div className="lg:col-span-6 rounded-3xl bg-[#0d1424] border border-slate-800 p-6 space-y-6">
           <h2 className="text-sm font-bold text-white uppercase tracking-wider">Action Breakdown by Type</h2>
 
           {stats?.eventTypeBreakdown && Object.keys(stats.eventTypeBreakdown).length > 0 ? (
@@ -196,7 +196,7 @@ export default function AnalyticsPage() {
                       {/* Progress Bar */}
                       <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                          className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full"
                           style={{ width: `${pct}%` }}
                         />
                       </div>
@@ -210,7 +210,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Right: Recent Live Events Stream */}
-        <div className="lg:col-span-6 rounded-3xl bg-[#131d33] border border-slate-800 p-6 space-y-6">
+        <div className="lg:col-span-6 rounded-3xl bg-[#0d1424] border border-slate-800 p-6 space-y-6">
           <h2 className="text-sm font-bold text-white uppercase tracking-wider">Recent Activity Stream</h2>
 
           {stats?.recentEvents && stats.recentEvents.length > 0 ? (
@@ -226,7 +226,7 @@ export default function AnalyticsPage() {
                       <div className="p-2 rounded-xl bg-slate-800">{getEventIcon(event.eventType)}</div>
                       <div>
                         <div className="font-semibold text-slate-200">{formatEventName(event.eventType)}</div>
-                        <div className="text-[11px] text-indigo-400">
+                        <div className="text-[11px] text-blue-400">
                           {cust ? `${cust.name} (/@${cust.username})` : "Customer Profile"}
                         </div>
                       </div>

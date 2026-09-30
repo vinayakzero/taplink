@@ -57,8 +57,8 @@ export default function AdminSettingsPage() {
 
       <form onSubmit={handleSave} className="space-y-6">
         {/* Domain & URL Configuration */}
-        <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4">
-          <div className="flex items-center gap-2.5 text-indigo-400 font-bold text-sm uppercase tracking-wider">
+        <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-4">
+          <div className="flex items-center gap-2.5 text-blue-400 font-bold text-sm uppercase tracking-wider">
             <Globe className="w-4 h-4" />
             <span>Production Domain Configuration</span>
           </div>
@@ -69,11 +69,11 @@ export default function AdminSettingsPage() {
               type="url"
               value={platformUrl}
               onChange={(e) => setPlatformUrl(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:outline-none focus:border-indigo-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:outline-none focus:border-blue-500"
             />
             <p className="text-[11px] text-slate-400">
               Customer profiles are strictly generated as{" "}
-              <span className="text-indigo-400 font-mono">https://taplink.in/[username]</span>.
+              <span className="text-blue-400 font-mono">https://taplink.in/[username]</span>.
             </p>
           </div>
 
@@ -84,7 +84,7 @@ export default function AdminSettingsPage() {
                 type="email"
                 value={supportEmail}
                 onChange={(e) => setSupportEmail(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
               />
             </div>
 
@@ -101,7 +101,7 @@ export default function AdminSettingsPage() {
         </div>
 
         {/* Database & Infrastructure */}
-        <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4">
+        <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-4">
           <div className="flex items-center gap-2.5 text-emerald-400 font-bold text-sm uppercase tracking-wider">
             <Database className="w-4 h-4" />
             <span>PostgreSQL / Supabase Database</span>
@@ -132,23 +132,23 @@ export default function AdminSettingsPage() {
         </div>
 
         {/* Security Info */}
-        <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4">
-          <div className="flex items-center gap-2.5 text-purple-400 font-bold text-sm uppercase tracking-wider">
+        <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-4">
+          <div className="flex items-center gap-2.5 text-blue-400 font-bold text-sm uppercase tracking-wider">
             <Shield className="w-4 h-4" />
             <span>Admin Authentication & Security</span>
           </div>
 
           <p className="text-xs text-slate-300 leading-relaxed">
             Admin sessions are secured via cryptographic HTTP-only JWT cookies with bcrypt salted password verification.
-            Update <code className="text-indigo-300 font-mono">ADMIN_EMAIL</code> and{" "}
-            <code className="text-indigo-300 font-mono">ADMIN_PASSWORD</code> in your environment variables for production.
+            Update <code className="text-blue-300 font-mono">ADMIN_EMAIL</code> and{" "}
+            <code className="text-blue-300 font-mono">ADMIN_PASSWORD</code> in your environment variables for production.
           </p>
         </div>
 
         <div>
           <button
             type="submit"
-            className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-lg shadow-indigo-600/30 transition-all active:scale-95 flex items-center gap-2"
+            className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-600/30 transition-all active:scale-95 flex items-center gap-2"
           >
             <Save className="w-4 h-4" />
             <span>Save Settings</span>

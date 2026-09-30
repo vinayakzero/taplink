@@ -120,7 +120,7 @@ export default function AdminCustomersPage() {
 
         <Link
           href="/admin/customers/new"
-          className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition-all flex items-center gap-1.5 self-start sm:self-auto"
+          className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition-all flex items-center gap-1.5 self-start sm:self-auto"
         >
           <UserPlus className="w-4 h-4" />
           <span>Add New Customer</span>
@@ -128,7 +128,7 @@ export default function AdminCustomersPage() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-[#131d33] border border-slate-800">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-[#0d1424] border border-slate-800">
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
@@ -136,7 +136,7 @@ export default function AdminCustomersPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by name, business, or username..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white text-xs focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white text-xs focus:outline-none focus:border-blue-500 transition-colors"
           />
         </div>
 
@@ -148,7 +148,7 @@ export default function AdminCustomersPage() {
               onClick={() => setStatusFilter(tab)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 statusFilter === tab
-                  ? "bg-indigo-600 text-white shadow-sm"
+                  ? "bg-blue-600 text-white shadow-sm"
                   : "text-slate-400 hover:text-white"
               }`}
             >
@@ -159,7 +159,7 @@ export default function AdminCustomersPage() {
       </div>
 
       {/* Customers Table / List */}
-      <div className="rounded-3xl bg-[#131d33] border border-slate-800 overflow-hidden shadow-xl">
+      <div className="rounded-3xl bg-[#0d1424] border border-slate-800 overflow-hidden shadow-xl">
         {loading ? (
           <div className="p-12 text-center text-slate-400 text-xs">Loading customer profiles...</div>
         ) : filtered.length === 0 ? (
@@ -196,7 +196,7 @@ export default function AdminCustomersPage() {
                               className="object-cover"
                             />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-indigo-600 text-white font-bold text-sm">
+                            <div className="w-full h-full flex items-center justify-center bg-blue-600 text-white font-bold text-sm">
                               {customer.name.charAt(0)}
                             </div>
                           )}
@@ -214,7 +214,7 @@ export default function AdminCustomersPage() {
                         <a
                           href={`/${customer.username}`}
                           target="_blank"
-                          className="text-indigo-400 hover:text-indigo-300 hover:underline flex items-center gap-1 font-semibold"
+                          className="text-blue-400 hover:text-blue-300 hover:underline flex items-center gap-1 font-semibold"
                         >
                           <span>/{customer.username}</span>
                           <ExternalLink className="w-3 h-3" />
@@ -236,7 +236,7 @@ export default function AdminCustomersPage() {
                     {/* Contact Info */}
                     <td className="py-4 px-4 text-slate-300">
                       <div>{customer.phone || customer.whatsapp || "No phone set"}</div>
-                      {customer.upiId && <div className="text-[11px] font-mono text-purple-400">{customer.upiId}</div>}
+                      {customer.upiId && <div className="text-[11px] font-mono text-blue-300">{customer.upiId}</div>}
                     </td>
 
                     {/* Status Badge */}
@@ -300,7 +300,7 @@ export default function AdminCustomersPage() {
           onClick={() => setSelectedQrCustomer(null)}
         >
           <div
-            className="bg-[#131d33] border border-slate-700 rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl"
+            className="bg-[#0d1424] border border-slate-700 rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg font-bold text-white">{selectedQrCustomer.name}</h3>
@@ -317,7 +317,7 @@ export default function AdminCustomersPage() {
               />
             </div>
 
-            <div className="text-xs font-mono text-indigo-400 bg-slate-900 py-2 px-3 rounded-xl border border-slate-800 truncate">
+            <div className="text-xs font-mono text-blue-400 bg-slate-900 py-2 px-3 rounded-xl border border-slate-800 truncate">
               https://taplink.in/{selectedQrCustomer.username}
             </div>
 
@@ -330,7 +330,7 @@ export default function AdminCustomersPage() {
               </button>
               <button
                 onClick={() => setSelectedQrCustomer(null)}
-                className="py-2 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold"
+                className="py-2 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold"
               >
                 Close
               </button>

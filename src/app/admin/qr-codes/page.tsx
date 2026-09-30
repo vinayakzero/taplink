@@ -105,8 +105,8 @@ export default function QrCodesStudioPage() {
         {/* Controls Column */}
         <div className="lg:col-span-6 space-y-6">
           {/* 1. Select Customer */}
-          <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider text-indigo-400">
+          <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-4">
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider text-blue-400">
               1. Select Customer Profile
             </h2>
 
@@ -115,7 +115,7 @@ export default function QrCodesStudioPage() {
               <select
                 value={selectedCustomerId}
                 onChange={(e) => setSelectedCustomerId(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-indigo-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:outline-none focus:border-blue-500"
               >
                 {customers.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -127,7 +127,7 @@ export default function QrCodesStudioPage() {
 
             {selectedCustomer && (
               <div className="flex items-center justify-between p-3 rounded-2xl bg-slate-900 border border-slate-800 text-xs">
-                <span className="font-mono text-indigo-400 truncate max-w-[240px]">{profileUrl}</span>
+                <span className="font-mono text-blue-400 truncate max-w-[240px]">{profileUrl}</span>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleCopy}
@@ -150,8 +150,8 @@ export default function QrCodesStudioPage() {
           </div>
 
           {/* 2. Style & Colors */}
-          <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4">
-            <h2 className="text-sm font-bold text-white uppercase tracking-wider text-purple-400">
+          <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-4">
+            <h2 className="text-sm font-bold text-white uppercase tracking-wider text-blue-400">
               2. QR Style & Colors
             </h2>
 
@@ -199,21 +199,21 @@ export default function QrCodesStudioPage() {
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => {
-                    setFgColor("#0b0f19");
+                    setFgColor("#070a13");
                     setBgColor("#ffffff");
                   }}
                   className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium"
                 >
-                  Classic Black & White
+                  Classic Obsidian & White
                 </button>
                 <button
                   onClick={() => {
-                    setFgColor("#4f46e5");
+                    setFgColor("#1e40af");
                     setBgColor("#ffffff");
                   }}
                   className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium"
                 >
-                  TapLink Indigo
+                  Sapphire Navy
                 </button>
                 <button
                   onClick={() => {
@@ -238,7 +238,7 @@ export default function QrCodesStudioPage() {
           </div>
 
           {/* 3. Export Actions */}
-          <div className="p-6 rounded-3xl bg-[#131d33] border border-slate-800 space-y-4">
+          <div className="p-6 rounded-3xl bg-[#0d1424] border border-slate-800 space-y-4">
             <h2 className="text-sm font-bold text-white uppercase tracking-wider text-emerald-400">
               3. Download & Print
             </h2>
@@ -246,7 +246,7 @@ export default function QrCodesStudioPage() {
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={handleDownloadPng}
-                className="py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2"
+                className="py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
               >
                 <Download className="w-4 h-4" />
                 <span>Download PNG (1024px)</span>
@@ -256,7 +256,7 @@ export default function QrCodesStudioPage() {
                 onClick={handleDownloadSvg}
                 className="py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs transition-all flex items-center justify-center gap-2"
               >
-                <Layers className="w-4 h-4 text-purple-400" />
+                <Layers className="w-4 h-4 text-blue-400" />
                 <span>Download Vector SVG</span>
               </button>
             </div>
@@ -265,7 +265,7 @@ export default function QrCodesStudioPage() {
 
         {/* Live Preview & Printable Standee Card Column */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="p-8 rounded-3xl bg-[#131d33] border border-slate-800 flex flex-col items-center justify-center text-center space-y-6 shadow-2xl">
+          <div className="p-8 rounded-3xl bg-[#0d1424] border border-slate-800 flex flex-col items-center justify-center text-center space-y-6 shadow-2xl">
             <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">
               Printable Standee / Counter Display
             </span>

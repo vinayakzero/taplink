@@ -51,11 +51,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#080c16] text-slate-100 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-[#070a13] text-slate-100 flex flex-col md:flex-row">
       {/* Mobile Top Header */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-[#0d1527] border-b border-slate-800 sticky top-0 z-30">
+      <div className="md:hidden flex items-center justify-between p-4 bg-[#090e1a] border-b border-slate-800 sticky top-0 z-30">
         <Link href="/admin" className="flex items-center gap-2.5">
-          <div className="relative w-8 h-8 rounded-xl overflow-hidden shadow-md shadow-indigo-600/30 border border-indigo-500/30 shrink-0">
+          <div className="relative w-8 h-8 rounded-xl overflow-hidden shadow-md shadow-blue-600/30 border border-blue-500/30 shrink-0">
             <Image src="/logo.png" alt="TapLink Logo" fill sizes="32px" className="object-cover" />
           </div>
           <span className="font-extrabold text-white">TapLink Admin</span>
@@ -70,19 +70,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Sidebar (Desktop & Mobile Drawer) */}
       <aside
-        className={`fixed md:sticky top-0 z-40 h-screen w-64 bg-[#0d1527] border-r border-slate-800/80 flex flex-col justify-between transition-transform duration-300 ${
+        className={`fixed md:sticky top-0 z-40 h-screen w-64 bg-[#090e1a] border-r border-slate-800/90 flex flex-col justify-between transition-transform duration-300 ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         <div className="p-6 space-y-6">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 rounded-2xl overflow-hidden shadow-lg shadow-indigo-600/30 border border-indigo-500/40 shrink-0 group-hover:scale-105 transition-transform">
+            <div className="relative w-10 h-10 rounded-2xl overflow-hidden shadow-lg shadow-blue-600/25 border border-blue-500/30 shrink-0 group-hover:scale-105 transition-transform">
               <Image src="/logo.png" alt="TapLink" fill sizes="40px" className="object-cover" />
             </div>
             <div>
               <div className="font-black text-white text-lg tracking-tight">TapLink</div>
-              <div className="text-[10px] uppercase font-bold tracking-widest text-indigo-400">Admin Control</div>
+              <div className="text-[10px] uppercase font-bold tracking-widest text-blue-400">Admin Control</div>
             </div>
           </Link>
 
@@ -99,7 +99,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                     isActive
-                      ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+                      ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
                       : "text-slate-400 hover:text-white hover:bg-slate-800/60"
                   }`}
                 >
@@ -112,7 +112,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         {/* Bottom Sidebar info & Logout */}
-        <div className="p-6 border-t border-slate-800/80 space-y-3">
+        <div className="p-6 border-t border-slate-800/90 space-y-3">
           <Link
             href="/"
             target="_blank"
@@ -133,7 +133,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 min-w-0 bg-[#080c16] overflow-y-auto">
+      <main className="flex-1 min-w-0 bg-[#070a13] overflow-y-auto">
         <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">{children}</div>
       </main>
     </div>
